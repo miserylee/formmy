@@ -40,21 +40,21 @@ importers:
 
   packages/core:
     specifiers:
-      configs: workspace:*
+      '@biaodan/configs': workspace:*
       eslint: ^8.57.0
       typescript: ^5.3.3
     devDependencies:
-      configs: link:../../configs
+      '@biaodan/configs': link:../../configs
       eslint: 8.57.0
       typescript: 5.3.3
 
   packages/store:
     specifiers:
-      configs: workspace:*
+      '@biaodan/configs': workspace:*
       eslint: ^8.57.0
       typescript: ^5.3.3
     devDependencies:
-      configs: link:../../configs
+      '@biaodan/configs': link:../../configs
       eslint: 8.57.0
       typescript: 5.3.3
 
