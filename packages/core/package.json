@@ -1,6 +1,6 @@
 {
   "name": "@biaodan/core",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "一个简单但是够用的表单核心库",
   "author": "lijifei <lijifei@bytedance.com>",
   "homepage": "https://github.com/miserylee/biaodan#readme",
