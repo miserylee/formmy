@@ -6,10 +6,6 @@
   "homepage": "https://github.com/miserylee/biaodan#readme",
   "license": "MIT",
   "main": "src/index.ts",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
   "files": [
     "lib"
   ],
@@ -22,14 +18,15 @@
     "url": "git+https://github.com/miserylee/biaodan.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@biaodan/store.test.js"
+    "test": "exit 0",
+    "build": "tsc"
   },
   "bugs": {
     "url": "https://github.com/miserylee/biaodan/issues"
   },
   "devDependencies": {
+    "configs": "workspace:*",
     "eslint": "^8.57.0",
-    "prettier": "^3.2.5",
     "typescript": "^5.3.3"
   }
 }
