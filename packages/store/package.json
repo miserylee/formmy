@@ -1,8 +1,8 @@
 {
-  "name": "@biaodan/core",
+  "name": "@biaodan/store",
   "version": "0.0.0",
-  "description": "一个简单但是够用的表单核心库",
-  "author": "lijifei <lijifei@bytedance.com>",
+  "description": "一个简单但是够用的状态管理库",
+  "author": "miserylee <miserylee@foxmail.com>",
   "homepage": "https://github.com/miserylee/biaodan#readme",
   "license": "MIT",
   "main": "src/index.ts",
@@ -22,9 +22,14 @@
     "url": "git+https://github.com/miserylee/biaodan.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@biaodan/core.test.js"
+    "test": "node ./__tests__/@biaodan/store.test.js"
   },
   "bugs": {
     "url": "https://github.com/miserylee/biaodan/issues"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
   }
 }
