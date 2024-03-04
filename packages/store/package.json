@@ -1,6 +1,6 @@
 {
   "name": "@biaodan/store",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "一个简单但是够用的状态管理库",
   "author": "miserylee <miserylee@foxmail.com>",
   "homepage": "https://github.com/miserylee/biaodan#readme",
