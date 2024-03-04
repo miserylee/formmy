@@ -1,0 +1,29 @@
+{
+  "name": "@biaodan/core",
+  "version": "0.0.0",
+  "description": "一个简单但是够用的表单核心库",
+  "author": "lijifei <lijifei@bytedance.com>",
+  "homepage": "https://github.com/miserylee/biaodan#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miserylee/biaodan.git"
+  },
+  "scripts": {
+    "test": "node ./__tests__/@biaodan/core.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/miserylee/biaodan/issues"
+  }
+}
