@@ -1,1 +1,1 @@
-module.exports = require('configs/.eslintrc');
+module.exports = require('@formmy/configs/.eslintrc');
