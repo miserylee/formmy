@@ -1,5 +1,5 @@
 {
-  "name": "@biaodan/configs",
+  "name": "@formmy/configs",
   "version": "0.1.0",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.1.0",

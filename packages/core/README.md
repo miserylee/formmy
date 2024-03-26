@@ -1,11 +1,11 @@
-# `@biaodan/core`
+# `@formmy/core`
 
 > TODO: description
 
 ## Usage
 
 ```
-const core = require('@biaodan/core');
+const core = require('@formmy/core');
 
 // TODO: DEMONSTRATE API
 ```

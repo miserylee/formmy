@@ -1,9 +1,9 @@
 {
-  "name": "@biaodan/core",
+  "name": "@formmy/core",
   "version": "0.1.1",
   "description": "一个简单但是够用的表单核心库",
   "author": "lijifei <lijifei@bytedance.com>",
-  "homepage": "https://github.com/miserylee/biaodan#readme",
+  "homepage": "https://github.com/miserylee/formmy#readme",
   "license": "MIT",
   "main": "src/index.ts",
   "files": [
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/miserylee/biaodan.git"
+    "url": "git+https://github.com/miserylee/formmy.git"
   },
   "scripts": {
     "test": "exit 0",
@@ -23,10 +23,10 @@
     "version": "npm run build"
   },
   "bugs": {
-    "url": "https://github.com/miserylee/biaodan/issues"
+    "url": "https://github.com/miserylee/formmy/issues"
   },
   "devDependencies": {
-    "@biaodan/configs": "workspace:*",
+    "@formmy/configs": "workspace:*",
     "eslint": "^8.57.0",
     "typescript": "^5.3.3"
   }

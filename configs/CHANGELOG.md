@@ -8,4 +8,4 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
-* add store implementations ([ad47132](https://github.com/miserylee/biaodan/commit/ad47132615f212d993944961e1a46afee36e844d))
+* add store implementations ([ad47132](https://github.com/miserylee/formmy/commit/ad47132615f212d993944961e1a46afee36e844d))
