@@ -1,5 +1,7 @@
 import { type Listener, type StateUpdater, type SubscribeOptions, type UnSubscribeFn } from './types';
 
+export * from './types';
+
 export function updateState<T>(state: T, updater: StateUpdater<T>): T {
   if (updater instanceof Function) {
     return updater(state);
