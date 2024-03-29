@@ -2,7 +2,7 @@
   "name": "@formmy/store",
   "version": "0.1.2",
   "description": "一个简单但是够用的状态管理库",
-  "author": "miserylee <miserylee@foxmail.com>",
+  "author": "MiseryLee <miserylee@foxmail.com>",
   "homepage": "https://github.com/miserylee/formmy#readme",
   "license": "MIT",
   "main": "src/index.ts",

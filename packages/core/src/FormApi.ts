@@ -2,14 +2,14 @@ import { Immer } from 'immer';
 import get from 'lodash.get';
 import set from 'lodash.set';
 
-import { FieldApiImpl } from './FieldApi';
+import { FieldApi } from './FieldApi';
 import Store, { updateState, StateUpdater, UnSubscribeFn, SubscribeOptions } from '@formmy/store';
 import {
   type CreateFormOptions,
   type DeepKeys,
   type DeepValue,
-  type FieldApi,
-  type FormApi,
+  type IFieldApi,
+  type IFormApi,
   type FormErrorsMap,
   type FormValidateResult,
   type FormValidationError,
@@ -34,7 +34,7 @@ interface CompiledValidator {
   subscribes: UnSubscribeFn[];
 }
 
-export class FormApiImpl<T> implements FormApi<T> {
+export class FormApi<T> implements IFormApi<T> {
   private validators: Store<FormValidatorsMap<T>>;
   private values: Store<T>;
   private validationStates: Store<FormErrorsMap<T>>;
@@ -195,7 +195,7 @@ export class FormApiImpl<T> implements FormApi<T> {
   getValidationState = (key: DeepKeys<T>): FormValidationState =>
     this.validationStates.state[key] ?? { ...EMPTY_VALIDATION_STATE };
 
-  getField = <Key extends DeepKeys<T>>(key: Key): FieldApi<T, Key> => new FieldApiImpl(key, this);
+  getField = <Key extends DeepKeys<T>>(key: Key): IFieldApi<T, Key> => new FieldApi(key, this);
 
   getValue = <Key extends DeepKeys<T>>(key: Key): DeepValue<T, Key> => {
     if (key === '.') {
@@ -296,8 +296,8 @@ export class FormApiImpl<T> implements FormApi<T> {
     return false;
   };
 
-  subscribe<V>(type: 'values', options: SubscribeOptions<T, V>): UnSubscribeFn;
-  subscribe<V>(type: 'errors', options: SubscribeOptions<FormErrorsMap<T>, V>): UnSubscribeFn;
+  subscribe<V = T>(type: 'values', options: SubscribeOptions<T, V>): UnSubscribeFn;
+  subscribe<V = T>(type: 'errors', options: SubscribeOptions<FormErrorsMap<T>, V>): UnSubscribeFn;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscribe(type: 'values' | 'errors', options: SubscribeOptions<any, any>): UnSubscribeFn {
     switch (type) {

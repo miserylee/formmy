@@ -66,7 +66,7 @@ export interface FormValidator<
   validate(
     value: DeepValue<T, Key>,
     depValues: DeepKeys<T>[] extends Deps ? T : { -readonly [K in keyof Deps]: DeepValue<T, Deps[K]> },
-    field: FieldApi<T, Key>
+    field: IFieldApi<T, Key>
   ): FormValidationError | Promise<FormValidationError>;
   // 依赖的字段值发生变更时，需要触发校验
   deps?: [...Deps];
@@ -97,7 +97,7 @@ export type FormValidatorsMap<T> = {
 };
 
 // form api
-export interface FormApi<T> {
+export interface IFormApi<T> {
   setValidators(updater: StateUpdater<FormValidatorsMap<T>>): void;
   setValues(updater: StateUpdater<T>): void;
   setValue<Key extends DeepKeys<T>>(key: Key, updater: StateUpdater<DeepValue<T, Key>>): void;
@@ -110,7 +110,7 @@ export interface FormApi<T> {
   validate(): Promise<FormValidateResult<T>>;
   validate(key: DeepKeys<T>): Promise<FormValidationState>;
   submit(onSuccess: (values: T) => void, onError?: (errors: FormErrorsMap<T>) => void): Promise<boolean>;
-  getField<Key extends DeepKeys<T>>(key: Key): FieldApi<T, Key>;
+  getField<Key extends DeepKeys<T>>(key: Key): IFieldApi<T, Key>;
   subscribe<V = T>(type: 'values', options: SubscribeOptions<T, V>): UnSubscribeFn;
   subscribe<V = FormErrorsMap<T>>(
     type: 'errors',
@@ -131,14 +131,14 @@ export interface FormApi<T> {
 }
 
 // field api
-export interface FieldApi<T, Key extends DeepKeys<T>> {
+export interface IFieldApi<T, Key extends DeepKeys<T>> {
   setValidators(updater: StateUpdater<FormValidator<T, Key>[] | undefined>): void;
   setValue(updater: StateUpdater<DeepValue<T, Key>>): void;
   getValue(): DeepValue<T, Key>;
   setValidationState(updater: StateUpdater<FormValidationState>): void;
   getValidationState(): FormValidationState;
   validate(): Promise<FormValidationState>;
-  getForm(): FormApi<T>;
+  getForm(): IFormApi<T>;
   subscribe(
     type: 'value',
     options: Omit<SubscribeOptions<DeepValue<T, Key>, DeepValue<T, Key>>, 'selector'>

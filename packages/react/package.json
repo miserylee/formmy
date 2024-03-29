@@ -1,7 +1,7 @@
 {
-  "name": "@formmy/core",
+  "name": "@formmy/react",
   "version": "0.1.2",
-  "description": "一个简单但是够用的表单核心库",
+  "description": "一个简单但是够用的表单 react api",
   "author": "MiseryLee <miserylee@foxmail.com>",
   "homepage": "https://github.com/miserylee/formmy#readme",
   "license": "MIT",
@@ -29,13 +29,15 @@
     "@formmy/configs": "workspace:*",
     "@types/lodash.get": "^4.4.9",
     "@types/lodash.set": "^4.3.9",
+    "@types/react": "^18.2.73",
     "eslint": "^8.57.0",
+    "react": "*",
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "@formmy/store": "workspace:*",
-    "immer": "^10.0.4",
-    "lodash.get": "^4.4.2",
-    "lodash.set": "^4.3.2"
+    "@formmy/core": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": "*"
   }
 }

@@ -1,10 +1,10 @@
-import { type FormApiImpl } from './FormApi';
+import { type FormApi } from './FormApi';
 import { StateUpdater, SubscribeOptions, UnSubscribeFn, updateState } from '@formmy/store';
 import {
   type DeepKeys,
   type DeepValue,
-  type FieldApi,
-  type FormApi,
+  type IFieldApi,
+  type IFormApi,
   type FormValidationState,
   type FormValidator,
 } from './types';
@@ -13,17 +13,17 @@ import {
  * fieldApi 本身不管理状态，仅作为一个内置了字段 key binding 的订阅器使用
  */
 
-export class FieldApiImpl<T, Key extends DeepKeys<T>> implements FieldApi<T, Key> {
+export class FieldApi<T, Key extends DeepKeys<T>> implements IFieldApi<T, Key> {
   constructor(
     private key: Key,
-    private form: FormApiImpl<T>
+    private form: FormApi<T>
   ) {
     this.subscribe = this.subscribe.bind(this);
   }
 
   getValidationState = (): FormValidationState => this.form.getValidationState(this.key);
 
-  getForm = (): FormApi<T> => this.form;
+  getForm = (): IFormApi<T> => this.form;
 
   getValue = (): DeepValue<T, Key> => this.form.getValue(this.key);
 
