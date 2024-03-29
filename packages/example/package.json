@@ -1,0 +1,36 @@
+{
+  "name": "@formmy/example",
+  "version": "0.1.2",
+  "description": "一个简单但是够用的表单示例包",
+  "author": "MiseryLee <miserylee@foxmail.com>",
+  "homepage": "https://github.com/miserylee/formmy#readme",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miserylee/formmy.git"
+  },
+  "scripts": {
+    "test": "exit 0",
+    "build": "tsc",
+    "version": "npm run build"
+  },
+  "bugs": {
+    "url": "https://github.com/miserylee/formmy/issues"
+  },
+  "devDependencies": {
+    "@formmy/configs": "workspace:*",
+    "@rspack/cli": "^0.5.9",
+    "@rspack/core": "^0.5.9",
+    "@types/react": "^18.2.73",
+    "@types/react-dom": "^18.2.23",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3",
+    "webpack": "^5.91.0"
+  },
+  "dependencies": {
+    "@formmy/react": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
