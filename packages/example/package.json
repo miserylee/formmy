@@ -11,9 +11,8 @@
     "url": "git+https://github.com/miserylee/formmy.git"
   },
   "scripts": {
-    "test": "exit 0",
-    "build": "tsc",
-    "version": "npm run build"
+    "dev": "rspack serve",
+    "test": "exit 0"
   },
   "bugs": {
     "url": "https://github.com/miserylee/formmy/issues"
@@ -25,6 +24,7 @@
     "@types/react": "^18.2.73",
     "@types/react-dom": "^18.2.23",
     "eslint": "^8.57.0",
+    "sucrase": "^3.35.0",
     "typescript": "^5.3.3",
     "webpack": "^5.91.0"
   },
