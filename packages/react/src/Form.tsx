@@ -7,11 +7,11 @@ import {
   useImperativeHandle,
   useLayoutEffect,
   useMemo,
+  useRef,
 } from 'react';
 import { CreateFormOptions, IFormApi, FormApi, FormValidateResult } from '@formmy/core';
 import { FormContext } from './FormContext';
 import { useUpdatingRef } from './helpers/useUpdatingRef';
-import { usePrevious } from './helpers/usePrevious';
 
 export interface FormProps<T> extends CreateFormOptions<T> {
   values?: T;
@@ -28,10 +28,14 @@ export const Form = forwardRef(
     const onValuesChangeRef = useUpdatingRef(onValuesChange);
     const onValidationStatesChangeRef = useUpdatingRef(onValidationStatesChange);
 
+    const lastUpdatedValuesRef = useRef(values);
+
     useEffect(() => {
       const unsubValues = formApi.subscribe('values', {
         listener: (_values) => {
-          onValuesChangeRef.current?.(_values);
+          if (lastUpdatedValuesRef.current !== _values) {
+            onValuesChangeRef.current?.(_values);
+          }
         },
         immediate: true,
       });
@@ -46,12 +50,12 @@ export const Form = forwardRef(
       };
     }, [formApi]);
 
-    const prevValues = usePrevious(values);
     // 受控组件，值不一致时，强制设置 values
     useLayoutEffect(() => {
-      if (!values || [prevValues, values].includes(formApi.getValues())) {
+      if (!values || [lastUpdatedValuesRef.current, values].includes(formApi.getValues())) {
         return;
       }
+      lastUpdatedValuesRef.current = values;
       formApi.setValues(values);
     });
 
