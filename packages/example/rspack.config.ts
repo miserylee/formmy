@@ -1,6 +1,9 @@
 import { HtmlRspackPlugin, RspackOptions } from '@rspack/core';
 
 const config: RspackOptions = {
+  resolve: {
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
+  },
   entry: './src/index.tsx',
   module: {
     rules: [
@@ -22,6 +25,23 @@ const config: RspackOptions = {
           },
         },
         type: 'javascript/auto',
+      },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: {
+                  tailwindcss: {},
+                  autoprefixer: {},
+                },
+              },
+            },
+          },
+        ],
+        type: 'css',
       },
     ],
   },
