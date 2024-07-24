@@ -1,6 +1,15 @@
 {
   "name": "@formmy/configs",
   "version": "0.1.0",
+  "author": "MiseryLee <miserylee@foxmail.com>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miserylee/formmy.git"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
