@@ -10,7 +10,7 @@ formmy 是一个简单够用的表单辅助库，它具有以下特性：
 ## Usage
 
 ```typescript
-import { FormApi } from './';
+import { FormApi } from '@formmy/core';
 
 interface FormValues {
   username: string;
