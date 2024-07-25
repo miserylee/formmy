@@ -31,7 +31,7 @@ export const Form = forwardRef(
     const lastUpdatedValuesRef = useRef(values);
 
     useEffect(() => {
-      const unsubValues = formApi.subscribe('values', {
+      formApi.subscribe('values', {
         listener: (_values) => {
           if (lastUpdatedValuesRef.current !== _values) {
             onValuesChangeRef.current?.(_values);
@@ -39,14 +39,13 @@ export const Form = forwardRef(
         },
         immediate: true,
       });
-      const unsubErrors = formApi.subscribe('errors', {
+      formApi.subscribe('errors', {
         listener: () => {
           onValidationStatesChangeRef.current?.(formApi.getValidationStates());
         },
       });
       return () => {
-        unsubValues();
-        unsubErrors();
+        formApi.destroy();
       };
     }, [formApi]);
 
