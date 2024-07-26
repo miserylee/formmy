@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.3](https://github.com/miserylee/formmy/compare/v0.2.2...v0.2.3) (2024-07-26)
+
+### Bug Fixes
+
+* 直接使用 destory 方法进行表单实例回收 ([e322aaf](https://github.com/miserylee/formmy/commit/e322aaf0a33da17f158710d1e24aa8ebcc5ea4ff))
+
 ## [0.2.2](https://github.com/miserylee/formmy/compare/v0.2.1...v0.2.2) (2024-07-24)
 
 ### Bug Fixes
