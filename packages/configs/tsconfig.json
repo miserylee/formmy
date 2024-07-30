@@ -19,5 +19,5 @@
     "noEmit": true,
     "strictNullChecks": true
   },
-  "files": ["./node_modules/vitest/globals.d.ts"]
+  "files": ["./vitest/globals.d.ts"]
 }
