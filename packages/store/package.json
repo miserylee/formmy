@@ -18,7 +18,8 @@
     "url": "git+https://github.com/miserylee/formmy.git"
   },
   "scripts": {
-    "test": "exit 0",
+    "test": "vitest",
+    "test:cov": "vitest run --coverage",
     "build": "tsc",
     "version": "npm run build"
   },
@@ -28,6 +29,7 @@
   "devDependencies": {
     "@formmy/configs": "workspace:*",
     "eslint": "^8.57.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^2.0.4"
   }
 }

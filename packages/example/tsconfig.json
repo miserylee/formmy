@@ -1,10 +1,5 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "extends": "@formmy/configs/tsconfig.json",
-  "compilerOptions": {
-    "outDir": "lib",
-    "jsx": "react-jsx",
-    "moduleResolution": "Node",
-    "module": "ESNext"
-  }
+  "extends": "@formmy/configs/tsconfig.web.json",
+  "include": ["src", "__tests__"]
 }
