@@ -1,3 +1,3 @@
-import { UserConfig } from 'vitest/config';
+import { type UserConfig } from 'vitest/config';
 
 export function defineVitestConfig(config: UserConfig = {}): UserConfig;

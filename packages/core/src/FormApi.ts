@@ -1,9 +1,14 @@
+import Store, {
+  updateState,
+  type StateUpdater,
+  type UnSubscribeFn,
+  type SubscribeOptions,
+} from '@formmy/store';
 import { Immer } from 'immer';
 import get from 'lodash.get';
 import set from 'lodash.set';
 
 import { FieldApi } from './FieldApi';
-import Store, { updateState, StateUpdater, UnSubscribeFn, SubscribeOptions } from '@formmy/store';
 import {
   type CreateFormOptions,
   type DeepKeys,

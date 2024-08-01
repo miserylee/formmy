@@ -1,6 +1,8 @@
 import { useContext } from 'react';
+
+import { type IFormApi } from '@formmy/core';
+
 import { FormContext } from './FormContext';
-import { IFormApi } from '@formmy/core';
 
 export function useForm<T>(): IFormApi<T> {
   const context = useContext(FormContext);

@@ -1,5 +1,7 @@
-import { ReactElement, ReactNode } from 'react';
-import { IFormApi } from '@formmy/core';
+import { type ReactElement, type ReactNode } from 'react';
+
+import { type IFormApi } from '@formmy/core';
+
 import { useForm } from './useForm';
 
 export interface ActionProps<T> {

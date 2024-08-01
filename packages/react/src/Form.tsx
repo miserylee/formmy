@@ -1,15 +1,17 @@
 import {
-  ForwardedRef,
+  type ForwardedRef,
   forwardRef,
-  PropsWithChildren,
-  ReactElement,
+  type PropsWithChildren,
+  type ReactElement,
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
   useMemo,
   useRef,
 } from 'react';
-import { CreateFormOptions, IFormApi, FormApi, FormValidateResult } from '@formmy/core';
+
+import { type CreateFormOptions, type IFormApi, FormApi, type FormValidateResult } from '@formmy/core';
+
 import { FormContext } from './FormContext';
 import { useUpdatingRef } from './helpers/useUpdatingRef';
 

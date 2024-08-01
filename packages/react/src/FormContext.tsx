@@ -1,5 +1,6 @@
 import { createContext } from 'react';
-import { IFormApi } from '@formmy/core';
+
+import { type IFormApi } from '@formmy/core';
 
 export const FormContext = createContext<{
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

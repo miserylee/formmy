@@ -1,5 +1,7 @@
-import { DeepKeys, FormValidator, IFieldApi } from '@formmy/core';
-import { ReactElement, ReactNode, useEffect, useReducer } from 'react';
+import { type ReactElement, type ReactNode, useEffect, useReducer } from 'react';
+
+import { type DeepKeys, type FormValidator, type IFieldApi } from '@formmy/core';
+
 import { useField } from './useField';
 
 export interface FieldProps<T, Key extends DeepKeys<T>> {

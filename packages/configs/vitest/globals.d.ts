@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/consistent-type-imports */
+
 declare global {
   const suite: (typeof import('vitest'))['suite'];
   const test: (typeof import('vitest'))['test'];

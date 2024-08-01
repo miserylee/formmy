@@ -1,9 +1,9 @@
-process.env.VITE_CJS_IGNORE_WARNING = 'true';
-
 /* eslint-disable @typescript-eslint/no-var-requires */
-const { mergeConfig } = require('vitest/config');
+process.env.VITE_CJS_IGNORE_WARNING = 'true';
 const path = require('path');
+
 const tsconfigPaths = require('vite-tsconfig-paths').default;
+const { mergeConfig } = require('vitest/config');
 
 function resolveToInner(deps) {
   return deps.map((dep) => {

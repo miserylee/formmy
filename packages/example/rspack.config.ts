@@ -1,4 +1,4 @@
-import { HtmlRspackPlugin, RspackOptions } from '@rspack/core';
+import { HtmlRspackPlugin, type RspackOptions } from '@rspack/core';
 
 const config: RspackOptions = {
   resolve: {

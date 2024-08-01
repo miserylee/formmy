@@ -1,5 +1,6 @@
+import { type StateUpdater, type SubscribeOptions, type UnSubscribeFn, updateState } from '@formmy/store';
+
 import { type FormApi } from './FormApi';
-import { StateUpdater, SubscribeOptions, UnSubscribeFn, updateState } from '@formmy/store';
 import {
   type DeepKeys,
   type DeepValue,

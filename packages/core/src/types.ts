@@ -1,4 +1,4 @@
-import { StateUpdater, SubscribeOptions, UnSubscribeFn } from '@formmy/store';
+import { type StateUpdater, type SubscribeOptions, type UnSubscribeFn } from '@formmy/store';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyArray = any[];
