@@ -16,6 +16,7 @@ importers:
 
   packages/configs:
     specifiers:
+      '@rushstack/eslint-patch': ^1.10.4
       '@typescript-eslint/eslint-plugin': ^7.1.0
       '@typescript-eslint/parser': ^7.1.0
       '@vitest/coverage-v8': ^2.0.4
@@ -34,6 +35,7 @@ importers:
       vite-tsconfig-paths: ^4.3.2
       vitest: ^2.0.4
     dependencies:
+      '@rushstack/eslint-patch': 1.10.4
       '@typescript-eslint/eslint-plugin': 7.1.0_dvc3ospnkwz4tsyaoocmvwzvo4
       '@typescript-eslint/parser': 7.1.0_rszs4ssu3hjbruhzajramqeml4
       '@vitest/coverage-v8': 2.0.4_vitest@2.0.4
@@ -1640,6 +1642,10 @@ packages:
       - webpack
       - webpack-cli
     dev: true
+
+  /@rushstack/eslint-patch/1.10.4:
+    resolution: {integrity: sha512-WJgX9nzTqknM393q1QJDJmoW28kUfEnybeTfVNcNAPnIx210RXm2DiXiHzfNPJNIUUb1tJnz/l4QGtJ30PgWmA==}
+    dev: false
 
   /@sigstore/bundle/2.2.0:
     resolution: {integrity: sha512-5VI58qgNs76RDrwXNhpmyN/jKpq9evV/7f1XrcqcAfvxDl5SeVY/I5Rmfe96ULAV7/FK5dge9RBKGBJPhL1WsQ==}
