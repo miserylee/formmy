@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.7](https://github.com/miserylee/formmy/compare/v0.2.6...v0.2.7) (2024-08-01)
+
+### Bug Fixes
+
+* extract base eslint config ([9eba627](https://github.com/miserylee/formmy/commit/9eba627df1fbb8a75aa2022610df15706f71a803))
+
 ## [0.2.6](https://github.com/miserylee/formmy/compare/v0.2.5...v0.2.6) (2024-08-01)
 
 ### Bug Fixes
