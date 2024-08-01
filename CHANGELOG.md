@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.6](https://github.com/miserylee/formmy/compare/v0.2.5...v0.2.6) (2024-08-01)
+
+### Bug Fixes
+
+* add eslint-patch modern-module-resolution ([1bc3aa4](https://github.com/miserylee/formmy/commit/1bc3aa43a576d8fb74388f37749686cc49d36ebc))
+
 ## [0.2.5](https://github.com/miserylee/formmy/compare/v0.2.4...v0.2.5) (2024-07-30)
 
 **Note:** Version bump only for package formmy
