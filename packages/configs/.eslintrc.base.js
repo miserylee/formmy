@@ -95,5 +95,6 @@ module.exports = {
     'no-param-reassign': 'off',
     'default-param-last': 'off',
     'no-promise-executor-return': 'off',
+    '@typescript-eslint/no-this-alias': 'off',
   },
 };
