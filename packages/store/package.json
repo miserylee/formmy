@@ -18,6 +18,7 @@
     "url": "git+https://github.com/miserylee/formmy.git"
   },
   "scripts": {
+    "lint": "eslint . --cache",
     "test": "vitest",
     "test:cov": "vitest run --coverage",
     "build": "tsc",

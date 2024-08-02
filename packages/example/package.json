@@ -11,6 +11,7 @@
     "url": "git+https://github.com/miserylee/formmy.git"
   },
   "scripts": {
+    "lint": "eslint . --cache",
     "dev": "rspack serve",
     "test": "exit 0"
   },

@@ -18,6 +18,7 @@
     "url": "git+https://github.com/miserylee/formmy.git"
   },
   "scripts": {
+    "lint": "eslint . --cache",
     "test": "exit 0",
     "build": "tsc",
     "version": "npm run build"
