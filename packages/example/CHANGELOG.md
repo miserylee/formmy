@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.2.11](https://github.com/miserylee/formmy/compare/v0.2.10...v0.2.11) (2024-10-11)
+
+**Note:** Version bump only for package @formmy/example
+
 ## [0.2.10](https://github.com/miserylee/formmy/compare/v0.2.9...v0.2.10) (2024-08-02)
 
 **Note:** Version bump only for package @formmy/example
