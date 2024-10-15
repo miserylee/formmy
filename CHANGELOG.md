@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/miserylee/formmy/compare/v0.2.11...v0.3.0) (2024-10-15)
+
+### Features
+
+* add IPureFieldApi interface ([ab9e112](https://github.com/miserylee/formmy/commit/ab9e112ec3288eb41977a8c9a9ba5825ee6b780f))
+
 ## [0.2.11](https://github.com/miserylee/formmy/compare/v0.2.10...v0.2.11) (2024-10-11)
 
 **Note:** Version bump only for package formmy
