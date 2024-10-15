@@ -130,23 +130,23 @@ export interface IFormApi<T> {
   destroy(): void;
 }
 
-// field api
-export interface IFieldApi<T, Key extends DeepKeys<T>> {
-  setValidators(updater: StateUpdater<FormValidator<T, Key>[] | undefined>): void;
-  setValue(updater: StateUpdater<DeepValue<T, Key>>): void;
-  getValue(): DeepValue<T, Key>;
+export interface IPureFieldApi<Value> {
+  getValue(): Value;
+  setValue(updater: StateUpdater<Value>): void;
   setValidationState(updater: StateUpdater<FormValidationState>): void;
   getValidationState(): FormValidationState;
   validate(): Promise<FormValidationState>;
-  getForm(): IFormApi<T>;
-  subscribe(
-    type: 'value',
-    options: Omit<SubscribeOptions<DeepValue<T, Key>, DeepValue<T, Key>>, 'selector'>
-  ): UnSubscribeFn;
+  subscribe(type: 'value', options: Omit<SubscribeOptions<Value, Value>, 'selector'>): UnSubscribeFn;
   subscribe(
     type: 'error',
     options: Omit<SubscribeOptions<FormValidationState, FormValidationState>, 'selector'>
   ): UnSubscribeFn;
+}
+
+// field api
+export interface IFieldApi<T, Key extends DeepKeys<T>> extends IPureFieldApi<DeepValue<T, Key>> {
+  setValidators(updater: StateUpdater<FormValidator<T, Key>[] | undefined>): void;
+  getForm(): IFormApi<T>;
 }
 
 export interface CreateFormOptions<T> {
