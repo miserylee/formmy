@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/miserylee/formmy/compare/v0.3.0...v0.4.0) (2024-10-17)
+
+### Features
+
+* optimize validators ([f43cfba](https://github.com/miserylee/formmy/commit/f43cfba28c5fc0d88588858e41f7433d6f4a57c5))
+
 # [0.3.0](https://github.com/miserylee/formmy/compare/v0.2.11...v0.3.0) (2024-10-15)
 
 ### Features
