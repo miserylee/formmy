@@ -21,6 +21,7 @@ import {
   type FormValidationState,
   type FormValidator,
   type FormValidatorsMap,
+  type FormValidatorWithDeps,
 } from './types';
 
 const immer = new Immer({ autoFreeze: false });
@@ -93,12 +94,19 @@ export class FormApi<T> implements IFormApi<T> {
   };
 
   private compileValidator = <Key extends DeepKeys<T>>(key: Key, validator: FormValidator<T, Key>) => {
-    const { validate, deps } = validator;
+    let _validator: FormValidatorWithDeps<T, Key>;
+    if (typeof validator === 'function') {
+      _validator = {
+        validate: validator,
+        deps: [],
+      };
+    } else {
+      _validator = validator;
+    }
     const validationStates = { ...EMPTY_VALIDATION_STATE };
     const fieldApi = this.getField(key);
     const validateFn = async () => {
       const fieldValue = this.getValue(key);
-      const depValues = deps ? deps.map((dep) => this.getValue(dep)) : this.getValues();
       const updateValidationState = (updates: Partial<FormValidationState>) => {
         Object.assign(validationStates, updates);
         // 收集这个字段对应所有校验函数对应的状态，做合并计算
@@ -121,7 +129,7 @@ export class FormApi<T> implements IFormApi<T> {
       updateValidationState({ isValidating: true });
       try {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const error = await validate(fieldValue, depValues as any, fieldApi);
+        const error = await _validator.validate(fieldValue, fieldApi);
         updateValidationState({ isValidating: false, isValid: error === undefined, message: error });
       } catch (e) {
         updateValidationState({
@@ -142,13 +150,13 @@ export class FormApi<T> implements IFormApi<T> {
       // 自身值的变更一定触发
       this.subscribeField(key, 'value', subscribeOptions),
     ];
-    if (!validator.deps) {
+    if (!_validator.deps) {
       // 没有声明依赖的，任何值变更都要触发校验
       subscribes.push(this.subscribeField('.', 'value', subscribeOptions));
     } else {
       // 根据依赖做过滤
       // 当前 key 对应的值变更了都要校验，和依赖声明无关
-      const depsWithoutCurrentKey = [...new Set(validator.deps.filter((dep) => dep !== key))];
+      const depsWithoutCurrentKey = [...new Set(_validator.deps.filter((dep) => dep !== key))];
       depsWithoutCurrentKey.forEach((depKey) => {
         subscribes.push(this.subscribeField(depKey, 'value', subscribeOptions));
       });

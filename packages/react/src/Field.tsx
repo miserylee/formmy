@@ -7,7 +7,7 @@ import { useField } from './useField';
 export interface FieldProps<T, Key extends DeepKeys<T>> {
   fieldKey: Key;
   children: (fieldApi: IFieldApi<T, Key>) => ReactNode;
-  validators?: FormValidator<T, Key>[];
+  validators?: FormValidator<T, Key> | FormValidator<T, Key>[];
 }
 
 export function Field<T, Key extends DeepKeys<T>>({
@@ -19,9 +19,10 @@ export function Field<T, Key extends DeepKeys<T>>({
   const fieldApi = useField<T, Key>(fieldKey);
 
   useEffect(() => {
+    const _validators = !validators ? [] : Array.isArray(validators) ? validators : [validators];
     // 校验器仅适用一次，后续的忽略
     fieldApi.setValidators((prev) => {
-      return [...(prev || []), ...(validators ?? [])];
+      return [...(prev || []), ..._validators];
     });
     return () => {
       if (!validators) {
@@ -29,7 +30,7 @@ export function Field<T, Key extends DeepKeys<T>>({
       }
       // 移除校验器
       fieldApi.setValidators((prev) => {
-        return prev?.filter((validator) => !validators.includes(validator));
+        return prev?.filter((validator) => !_validators.includes(validator));
       });
     };
   }, []);

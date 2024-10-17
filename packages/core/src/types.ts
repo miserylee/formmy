@@ -57,20 +57,23 @@ export type DeepValue<T, DeepKey extends DeepKeys<T>> = DeepKey extends '.'
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type FormValidationError = any | undefined;
 
-// 校验器
-export interface FormValidator<
-  T,
-  Key extends DeepKeys<T>,
-  Deps extends readonly DeepKeys<T>[] = readonly DeepKeys<T>[],
-> {
-  validate(
-    value: DeepValue<T, Key>,
-    depValues: DeepKeys<T>[] extends Deps ? T : { -readonly [K in keyof Deps]: DeepValue<T, Deps[K]> },
-    field: IFieldApi<T, Key>
-  ): FormValidationError | Promise<FormValidationError>;
+// 简化版校验器，默认 deps 为空
+export type FormValidatorLite<T, Key extends DeepKeys<T>> = (
+  value: DeepValue<T, Key>,
+  field: IFieldApi<T, Key>
+) => FormValidationError | Promise<FormValidationError>;
+
+// 带依赖的校验器
+export interface FormValidatorWithDeps<T, Key extends DeepKeys<T>> {
+  validate: FormValidatorLite<T, Key>;
   // 依赖的字段值发生变更时，需要触发校验
-  deps?: [...Deps];
+  deps?: DeepKeys<T>[];
 }
+
+// 校验器
+export type FormValidator<T, Key extends DeepKeys<T>> =
+  | FormValidatorLite<T, Key>
+  | FormValidatorWithDeps<T, Key>;
 
 // 校验状态
 export interface FormValidationState {

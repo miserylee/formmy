@@ -12,18 +12,13 @@ const factory = getFormFactory<LoginFormValues>();
 
 export function LoginForm(): ReactElement {
   return (
-    <div className="flex flex-col gap-4 rounded shadow p-5 bg-white">
+    <div className="flex flex-col gap-4 rounded bg-white p-5 shadow">
       <factory.Form initialValues={{ username: '', password: '' }}>
         <factory.Field
           fieldKey="username"
-          validators={[
-            {
-              validate(v) {
-                return !v ? 'Username is required.' : undefined;
-              },
-              deps: [],
-            },
-          ]}
+          validators={(v) => {
+            return !v ? 'Username is required.' : undefined;
+          }}
         >
           {(fieldApi) => (
             <label>
@@ -44,14 +39,9 @@ export function LoginForm(): ReactElement {
         </factory.Field>
         <factory.Field
           fieldKey="password"
-          validators={[
-            {
-              validate(v) {
-                return !v ? 'Password is required.' : undefined;
-              },
-              deps: [],
-            },
-          ]}
+          validators={(v) => {
+            return !v ? 'Password is required.' : undefined;
+          }}
         >
           {(fieldApi) => (
             <label>
@@ -74,7 +64,7 @@ export function LoginForm(): ReactElement {
         <factory.Action>
           {(formApi) => (
             <button
-              className="border mt-3 bg-blue-500 text-white py-2 hover:bg-blue-400 transition active:bg-blue-600"
+              className="mt-3 border bg-blue-500 py-2 text-white transition hover:bg-blue-400 active:bg-blue-600"
               onClick={async () => {
                 const result = await formApi.validate();
                 if (!result.isValid) {
