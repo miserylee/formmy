@@ -95,6 +95,13 @@ export function LoginForm(): ReactElement {
           </>
         )}
       </div>
+      <button
+        onClick={() => {
+          formBridge.ref.current?.validate();
+        }}
+      >
+        validate
+      </button>
     </div>
   );
 }
