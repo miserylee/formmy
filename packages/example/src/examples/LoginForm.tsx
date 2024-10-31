@@ -61,7 +61,7 @@ export function LoginForm(): ReactElement {
             </label>
           )}
         </factory.Field>
-        <factory.Action>
+        <factory.Subscribe>
           {(formApi) => (
             <button
               className="mt-3 border bg-blue-500 py-2 text-white transition hover:bg-blue-400 active:bg-blue-600"
@@ -77,7 +77,7 @@ export function LoginForm(): ReactElement {
               Login
             </button>
           )}
-        </factory.Action>
+        </factory.Subscribe>
       </factory.Form>
     </div>
   );

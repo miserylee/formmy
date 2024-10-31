@@ -4,11 +4,11 @@ import { type IFormApi } from '@formmy/core';
 
 import { useForm } from './useForm';
 
-export interface ActionProps<T> {
+export interface SubscribeProps<T> {
   children: (formApi: IFormApi<T>) => ReactNode;
 }
 
-export function Action<T>({ children }: ActionProps<T>): ReactElement {
+export function Subscribe<T>({ children }: SubscribeProps<T>): ReactElement {
   const formApi = useForm<T>();
 
   return <>{children(formApi)}</>;
