@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/miserylee/formmy/compare/v0.4.0...v0.5.0) (2024-10-31)
+
+### Features
+
+* add useFormBridge ([a31b20b](https://github.com/miserylee/formmy/commit/a31b20bab5c1f265440564c2ac6ff6ff83c65863))
+
 # [0.4.0](https://github.com/miserylee/formmy/compare/v0.3.0...v0.4.0) (2024-10-17)
 
 ### Features
