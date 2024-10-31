@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.1](https://github.com/miserylee/formmy/compare/v0.5.0...v0.5.1) (2024-10-31)
+
+### Bug Fixes
+
+* ref in FormBridge is also a refObject ([c264491](https://github.com/miserylee/formmy/commit/c26449165f282363dbdbd130f3c98ad7e357f43c))
+
 # [0.5.0](https://github.com/miserylee/formmy/compare/v0.4.0...v0.5.0) (2024-10-31)
 
 ### Features
