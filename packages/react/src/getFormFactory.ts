@@ -7,6 +7,7 @@ import { Form, type FormProps } from './Form';
 import { Subscribe, type SubscribeProps } from './Subscribe';
 import { useField } from './useField';
 import { useForm } from './useForm';
+import { type FormBridge, useFormBridge } from './useFormBridge';
 
 export function getFormFactory<T>(): {
   Form: (props: PropsWithChildren<FormProps<T>> & { ref?: ForwardedRef<IFormApi<T>> }) => ReactElement;
@@ -14,6 +15,7 @@ export function getFormFactory<T>(): {
   Subscribe: (props: SubscribeProps<T>) => ReactElement;
   useForm: () => IFormApi<T>;
   useField: <Key extends DeepKeys<T>>(key: Key) => IFieldApi<T, Key>;
+  useFormBridge: () => FormBridge<T>;
 } {
   return {
     Form: Form<T>,
@@ -21,5 +23,6 @@ export function getFormFactory<T>(): {
     Subscribe: Subscribe<T>,
     useForm: useForm<T>,
     useField: useField,
+    useFormBridge: useFormBridge<T>,
   };
 }
