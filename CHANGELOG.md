@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/miserylee/formmy/compare/v0.5.1...v0.5.2) (2024-11-07)
+
+### Bug Fixes
+
+* 修复受控模式失效的问题 ([c07e733](https://github.com/miserylee/formmy/commit/c07e7336fe3a8bae16bc7a23c0e6667dcc0582b6))
+
 ## [0.5.1](https://github.com/miserylee/formmy/compare/v0.5.0...v0.5.1) (2024-10-31)
 
 ### Bug Fixes
