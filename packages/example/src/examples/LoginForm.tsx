@@ -22,23 +22,27 @@ export function LoginForm(): ReactElement {
             validators={(v) => {
               return !v ? 'Username is required.' : undefined;
             }}
+            deps={['password']}
           >
-            {(fieldApi) => (
-              <label>
-                <div>Username</div>
-                <input
-                  className={classNames('border outline-0', {
-                    'border-red-400': !fieldApi.getValidationState().isValid,
-                  })}
-                  value={fieldApi.getValue()}
-                  onChange={(e) => fieldApi.setValue(e.target.value)}
-                  onBlur={fieldApi.validate}
-                />
-                {fieldApi.getValidationState().isValid ? null : (
-                  <div className="text-red-400">{fieldApi.getValidationState().message}</div>
-                )}
-              </label>
-            )}
+            {(fieldApi) => {
+              console.log('rerender');
+              return (
+                <label>
+                  <div>Username</div>
+                  <input
+                    className={classNames('border outline-0', {
+                      'border-red-400': !fieldApi.getValidationState().isValid,
+                    })}
+                    value={fieldApi.getValue()}
+                    onChange={(e) => fieldApi.setValue(e.target.value)}
+                    onBlur={fieldApi.validate}
+                  />
+                  {fieldApi.getValidationState().isValid ? null : (
+                    <div className="text-red-400">{fieldApi.getValidationState().message}</div>
+                  )}
+                </label>
+              );
+            }}
           </factory.Field>
           <factory.Field
             fieldKey="password"
