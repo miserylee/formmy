@@ -53,7 +53,7 @@ export const Form = forwardRef(
 
     // 受控组件，值不一致时，强制设置 values
     useLayoutEffect(() => {
-      if (!values || [lastUpdatedValuesRef.current, values].includes(formApi.getValues())) {
+      if (!values || [lastUpdatedValuesRef.current, formApi.getValues()].includes(values)) {
         return;
       }
       lastUpdatedValuesRef.current = values;
