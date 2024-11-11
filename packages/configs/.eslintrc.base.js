@@ -76,7 +76,15 @@ module.exports = {
         warnOnDuplicates: true,
       },
     ],
-    'import/no-cycle': 'error',
+    'no-else-return': 'error',
+    'import/no-cycle': [
+      'error',
+      {
+        ignoreExternal: true,
+        allowUnsafeDynamicCyclicDependency: true,
+        maxDepth: 10,
+      },
+    ],
     'import/prefer-default-export': 'off',
     'import/no-extraneous-dependencies': [
       'error',
