@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.2](https://github.com/miserylee/formmy/compare/v0.6.1...v0.6.2) (2024-11-14)
+
+### Bug Fixes
+
+* remove builtin prettier tailwind plugin ([077b0fd](https://github.com/miserylee/formmy/commit/077b0fd3d822fc8f00c3a9147600e93ed5397be6))
+
 ## [0.6.1](https://github.com/miserylee/formmy/compare/v0.6.0...v0.6.1) (2024-11-11)
 
 ### Bug Fixes
