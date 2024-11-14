@@ -13,6 +13,5 @@ module.exports = {
   semi: true,
   plugins: [
     require.resolve('prettier-plugin-packagejson'),
-    require.resolve('prettier-plugin-tailwindcss'),
   ],
 };
