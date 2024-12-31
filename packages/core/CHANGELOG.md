@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/miserylee/formmy/compare/v0.6.3...v0.7.0) (2024-12-31)
+
+### Features
+
+* support resetValidationState ([a44407f](https://github.com/miserylee/formmy/commit/a44407fe2d6b7654d67ae336f86dc9590c95fc71))
+
 ## [0.6.2](https://github.com/miserylee/formmy/compare/v0.6.1...v0.6.2) (2024-11-14)
 
 **Note:** Version bump only for package @formmy/core
