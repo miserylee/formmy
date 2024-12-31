@@ -232,6 +232,18 @@ export class FormApi<T> implements IFormApi<T> {
     this.validationStates.update(updater);
   };
 
+  resetValidationStates = (): void => {
+    this.validationStates.reset();
+  };
+
+  resetValidationState(key: DeepKeys<T>): void {
+    this.validationStates.update((prev) => {
+      const next = { ...prev };
+      Reflect.deleteProperty(next, key);
+      return next;
+    });
+  }
+
   setValidators = (updater: StateUpdater<FormValidatorsMap<T>>): void => {
     this.validators.update(updater);
   };

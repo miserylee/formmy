@@ -32,6 +32,10 @@ export class FieldApi<T, Key extends DeepKeys<T>> implements IFieldApi<T, Key> {
     this.form.setValidationState(this.key, updater);
   };
 
+  resetValidationStates(): void {
+    this.form.resetValidationState(this.key);
+  }
+
   setValidators = (updater: StateUpdater<FormValidator<T, Key>[] | undefined>): void => {
     this.form.setValidators((prev) => {
       return {

@@ -37,6 +37,8 @@ export function Field<T, Key extends DeepKeys<T>>({
       fieldApi.setValidators((prev) => {
         return prev?.filter((validator) => !_validators.includes(validator));
       });
+      // 清除掉校验状态
+      fieldApi.resetValidationStates();
     };
   }, []);
 

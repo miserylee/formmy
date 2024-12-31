@@ -110,6 +110,8 @@ export interface IFormApi<T> {
   setValidationState(key: DeepKeys<T>, updater: StateUpdater<FormValidationState>): void;
   getValidationState(key: DeepKeys<T>): FormValidationState;
   getValidationStates(): FormValidateResult<T>;
+  resetValidationStates(): void;
+  resetValidationState(key: DeepKeys<T>): void;
   validate(): Promise<FormValidateResult<T>>;
   validate(key: DeepKeys<T>): Promise<FormValidationState>;
   submit(onSuccess: (values: T) => void, onError?: (errors: FormErrorsMap<T>) => void): Promise<boolean>;
@@ -138,6 +140,7 @@ export interface IPureFieldApi<Value> {
   setValue(updater: StateUpdater<Value>): void;
   setValidationState(updater: StateUpdater<FormValidationState>): void;
   getValidationState(): FormValidationState;
+  resetValidationStates(): void;
   validate(): Promise<FormValidationState>;
   subscribe(type: 'value', options: Omit<SubscribeOptions<Value, Value>, 'selector'>): UnSubscribeFn;
   subscribe(
