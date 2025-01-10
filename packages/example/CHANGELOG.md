@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/miserylee/formmy/compare/v0.7.0...v0.8.0) (2025-01-10)
+
+### Features
+
+* form interaction ([f441456](https://github.com/miserylee/formmy/commit/f4414569b5ca8ecad18f4184847d48992de6eddf))
+
 # [0.7.0](https://github.com/miserylee/formmy/compare/v0.6.3...v0.7.0) (2024-12-31)
 
 **Note:** Version bump only for package @formmy/example
