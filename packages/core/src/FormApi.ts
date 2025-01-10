@@ -22,6 +22,7 @@ import {
   type FormValidator,
   type FormValidatorsMap,
   type FormValidatorWithDeps,
+  type FormInteraction,
 } from './types';
 
 const immer = new Immer({ autoFreeze: false });
@@ -44,10 +45,17 @@ export class FormApi<T> implements IFormApi<T> {
   private validators: Store<FormValidatorsMap<T>>;
   private values: Store<T>;
   private validationStates: Store<FormErrorsMap<T>>;
+  private interactions: Store<FormInteraction<T>[]>;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private compiledValidators = new Map<string, Map<FormValidator<T, any>, CompiledValidator>>();
   private validateFunctionsQueue = new Set<ValidateFn>();
+
+  private interactionSubscribes: UnSubscribeFn[] = [];
+  private interactionQueue = new Set<FormInteraction<T>['action']>();
+  private cycleInteractionDetectingQueue: string[] = [];
+  private cycleInteractionDetectingTimer?: NodeJS.Timeout;
+  private cycleInteractionDetected = false;
 
   private subscribes: UnSubscribeFn[] = [];
 
@@ -60,14 +68,72 @@ export class FormApi<T> implements IFormApi<T> {
     this.validationStates = new Store({});
     this.values = new Store(this.options.initialValues);
     this.validators = new Store(this.options.validators ?? {});
+    this.interactions = new Store(this.options.interactions ?? []);
+
     // 初始化编译一次校验器
     this.recompileValidators();
-
     // 当校验器发生变更时，重新编译校验器
     this.validators.subscribe({
       listener: () => this.recompileValidators(),
     });
+
+    // 初始编译一次联动器
+    this.recompileInteractions();
+    // 当联动器发生变更时，重新编译联动器
+    this.interactions.subscribe({
+      listener: () => this.recompileInteractions(),
+    });
   }
+
+  private queueInteractions = (fn: FormInteraction<T>['action'], depKey: DeepKeys<T>) => {
+    const queueIsEmpty = this.interactionQueue.size === 0;
+    this.interactionQueue.add(fn);
+    if (queueIsEmpty) {
+      // should flush later
+      setTimeout(() => {
+        this.interactionQueue.forEach((_fn) => _fn(this));
+        this.interactionQueue.clear();
+      });
+    }
+
+    // 如果已经检测出过循环联动，则不再继续检测
+    if (this.cycleInteractionDetected) {
+      return;
+    }
+    // 循环联动检测，在 debounce 窗口内，如果检测队列中出现了同一个 depKey 超过 50 次，则认为存在循环联动
+    if (this.cycleInteractionDetectingQueue.filter((key) => key === depKey).length >= 50) {
+      // 循环联动有可能是业务预期内的行为，因此这里仅进行 warning 提示即可
+      console.warn(`Detected cycle interactions with depKey: ${depKey}`);
+      this.cycleInteractionDetected = true;
+    } else {
+      // 将本次 depKey 推入检测队列，debounce 清空队列的逻辑
+      this.cycleInteractionDetectingQueue.push(depKey);
+      clearTimeout(this.cycleInteractionDetectingTimer);
+      this.cycleInteractionDetectingTimer = setTimeout(() => {
+        clearTimeout(this.cycleInteractionDetectingTimer);
+        this.cycleInteractionDetectingQueue = [];
+      }, 16);
+    }
+  };
+
+  private recompileInteractions = () => {
+    // 先取消之前的所有监听器，重新构造监听
+    this.interactionSubscribes.forEach((unsub) => unsub());
+    this.interactions.state.forEach((interaction) => {
+      interaction.deps.forEach((depKey) => {
+        this.interactionSubscribes.push(
+          this.subscribeField(depKey, 'value', {
+            listener: () => {
+              // 联动函数推入队列
+              this.queueInteractions(interaction.action, depKey);
+            },
+            // 联动器订阅忽略重置值的场景
+            ignoreReset: true,
+          })
+        );
+      });
+    });
+  };
 
   private getCompiledValidator = <Key extends DeepKeys<T>>(key: Key, validator: FormValidator<T, Key>) =>
     this.compiledValidators.get(key)?.get(validator);
@@ -248,6 +314,10 @@ export class FormApi<T> implements IFormApi<T> {
     this.validators.update(updater);
   };
 
+  setInteractions = (updater: StateUpdater<FormInteraction<T>[]>): void => {
+    this.interactions.update(updater);
+  };
+
   setValue = <Key extends DeepKeys<T>>(key: Key, updater: StateUpdater<DeepValue<T, Key>>): void => {
     this.values.update((prev) => {
       if (key === '.') {
@@ -391,5 +461,9 @@ export class FormApi<T> implements IFormApi<T> {
     this.subscribes.forEach((unsubscribe) => unsubscribe());
     this.subscribes = [];
     this.validateFunctionsQueue.clear();
+    this.interactionSubscribes.forEach((unsub) => unsub());
+    this.interactionQueue.clear();
+    this.interactions.clear();
+    this.cycleInteractionDetectingQueue = [];
   };
 }

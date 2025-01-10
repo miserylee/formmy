@@ -99,9 +99,16 @@ export type FormValidatorsMap<T> = {
   [Key in DeepKeys<T>]?: FormValidator<T, Key>[];
 };
 
+// 表单联动配置
+export interface FormInteraction<T> {
+  deps: DeepKeys<T>[];
+  action: (formApi: IFormApi<T>) => void;
+}
+
 // form api
 export interface IFormApi<T> {
   setValidators(updater: StateUpdater<FormValidatorsMap<T>>): void;
+  setInteractions(updater: StateUpdater<FormInteraction<T>[]>): void;
   setValues(updater: StateUpdater<T>): void;
   setValue<Key extends DeepKeys<T>>(key: Key, updater: StateUpdater<DeepValue<T, Key>>): void;
   getValues(): T;
@@ -158,4 +165,5 @@ export interface IFieldApi<T, Key extends DeepKeys<T>> extends IPureFieldApi<Dee
 export interface CreateFormOptions<T> {
   initialValues: T;
   validators?: FormValidatorsMap<T>;
+  interactions?: FormInteraction<T>[];
 }

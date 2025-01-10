@@ -22,8 +22,11 @@ export interface FormProps<T> extends CreateFormOptions<T> {
 }
 
 export const Form = forwardRef(
-  ({ initialValues, children, validators, values, onValidationStatesChange, onValuesChange }, ref) => {
-    const formApi = useMemo(() => new FormApi({ initialValues, validators }), []);
+  (
+    { initialValues, children, validators, interactions, values, onValidationStatesChange, onValuesChange },
+    ref
+  ) => {
+    const formApi = useMemo(() => new FormApi({ initialValues, validators, interactions }), []);
 
     useImperativeHandle(ref, () => formApi, []);
 
