@@ -212,10 +212,10 @@ export class FormApi<T> implements IFormApi<T> {
       // 校验器订阅忽略重置值的场景
       ignoreReset: true,
     };
-    const subscribes: UnSubscribeFn[] = [
-      // 自身值的变更一定触发
-      this.subscribeField(key, 'value', subscribeOptions),
-    ];
+    const subscribes: UnSubscribeFn[] = [];
+    if (!_validator.obtuse) {
+      subscribes.push(this.subscribeField(key, 'value', subscribeOptions));
+    }
     if (!_validator.deps) {
       // 没有声明依赖的，任何值变更都要触发校验
       subscribes.push(this.subscribeField('.', 'value', subscribeOptions));

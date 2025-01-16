@@ -68,6 +68,8 @@ export interface FormValidatorWithDeps<T, Key extends DeepKeys<T>> {
   validate: FormValidatorLite<T, Key>;
   // 依赖的字段值发生变更时，需要触发校验
   deps?: DeepKeys<T>[];
+  // 为 true 时，当前字段值发生变更时，不会触发校验，只有显式地调用 validate 方法时才会触发
+  obtuse?: boolean;
 }
 
 // 校验器
