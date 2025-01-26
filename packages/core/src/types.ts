@@ -123,6 +123,7 @@ export interface IFormApi<T> {
   resetValidationState(key: DeepKeys<T>): void;
   validate(): Promise<FormValidateResult<T>>;
   validate(key: DeepKeys<T>): Promise<FormValidationState>;
+  submit(): Promise<T>;
   submit(onSuccess: (values: T) => void, onError?: (errors: FormErrorsMap<T>) => void): Promise<boolean>;
   getField<Key extends DeepKeys<T>>(key: Key): IFieldApi<T, Key>;
   subscribe<V = T>(type: 'values', options: SubscribeOptions<T, V>): UnSubscribeFn;

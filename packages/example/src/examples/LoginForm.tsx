@@ -100,11 +100,12 @@ export function LoginForm(): ReactElement {
         )}
       </div>
       <button
-        onClick={() => {
-          formBridge.ref.current?.validate();
+        onClick={async () => {
+          const values = await formBridge.ref.current?.submit();
+          console.log(values);
         }}
       >
-        validate
+        submit
       </button>
     </div>
   );

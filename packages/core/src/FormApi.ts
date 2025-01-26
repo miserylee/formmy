@@ -63,6 +63,7 @@ export class FormApi<T> implements IFormApi<T> {
     this.validate = this.validate.bind(this);
     this.subscribe = this.subscribe.bind(this);
     this.subscribeField = this.subscribeField.bind(this);
+    this.submit = this.submit.bind(this);
 
     // 初始化 store
     this.validationStates = new Store({});
@@ -378,18 +379,31 @@ export class FormApi<T> implements IFormApi<T> {
     return this.getValidationStates();
   }
 
-  submit = async (
-    onSuccess: (values: T) => void,
+  submit(): Promise<T>;
+  submit(onSuccess: (values: T) => void, onError?: (errors: FormErrorsMap<T>) => void): Promise<boolean>;
+  async submit(
+    onSuccess?: (values: T) => void,
     onError?: (errors: FormErrorsMap<T>) => void
-  ): Promise<boolean> => {
+  ): Promise<boolean | T> {
     const { errors, isValid } = await this.validate();
-    if (isValid) {
-      onSuccess?.(this.getValues());
-      return true;
+
+    if (onSuccess) {
+      if (isValid) {
+        onSuccess(this.getValues());
+        return true;
+      }
+
+      onError?.(errors);
+      return false;
     }
-    onError?.(errors);
-    return false;
-  };
+
+    if (isValid) {
+      return this.getValues();
+    }
+    const err = new Error(`the form validation failed.`);
+    Object.assign(err, { errors });
+    throw err;
+  }
 
   subscribe<V = T>(type: 'values', options: SubscribeOptions<T, V>): UnSubscribeFn;
   subscribe<V = T>(type: 'errors', options: SubscribeOptions<FormErrorsMap<T>, V>): UnSubscribeFn;
