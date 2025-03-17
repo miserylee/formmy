@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.10.1](https://github.com/miserylee/formmy/compare/v0.10.0...v0.10.1) (2025-03-17)
+
+### Bug Fixes
+
+* skip queued validate fn when it already removed from compiled validators ([0359842](https://github.com/miserylee/formmy/commit/03598421aedb262049ff1795dc59f5e055cc4317))
+
 # [0.10.0](https://github.com/miserylee/formmy/compare/v0.9.0...v0.10.0) (2025-02-08)
 
 ### Features
