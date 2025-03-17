@@ -241,7 +241,16 @@ export class FormApi<T> implements IFormApi<T> {
     if (queueIsEmpty) {
       // should flush later
       setTimeout(() => {
-        this.validateFunctionsQueue.forEach((_fn) => _fn());
+        const allValidateFns = [...this.compiledValidators.values()].flatMap((subMap) =>
+          [...subMap.values()].map((compiledValidator) => compiledValidator.validateFn)
+        );
+        this.validateFunctionsQueue.forEach((_fn) => {
+          if (!allValidateFns.includes(_fn)) {
+            // 如果在执行校验函数时，该校验函数已经卸载，则跳过
+            return;
+          }
+          _fn();
+        });
         this.validateFunctionsQueue.clear();
       });
     }
