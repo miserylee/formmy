@@ -1,6 +1,5 @@
 import { type StateUpdater, type SubscribeOptions, type UnSubscribeFn, updateState } from '@formmy/store';
 
-import { type FormApi } from './FormApi';
 import {
   type DeepKeys,
   type DeepValue,
@@ -17,7 +16,7 @@ import {
 export class FieldApi<T, Key extends DeepKeys<T>> implements IFieldApi<T, Key> {
   constructor(
     private key: Key,
-    private form: FormApi<T>
+    private form: IFormApi<T>
   ) {
     this.subscribe = this.subscribe.bind(this);
   }
@@ -55,6 +54,7 @@ export class FieldApi<T, Key extends DeepKeys<T>> implements IFieldApi<T, Key> {
   subscribe<V>(type: 'error', options: SubscribeOptions<FormValidationState, V>): UnSubscribeFn;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscribe(type: 'value' | 'error', options: SubscribeOptions<any, any>): UnSubscribeFn {
-    return this.form.subscribeField(this.key, type, options);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.form.subscribeField(this.key, type as any, options);
   }
 }

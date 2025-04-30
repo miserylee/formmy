@@ -143,6 +143,9 @@ export interface IFormApi<T> {
   ): UnSubscribeFn;
   reset(): void;
   destroy(): void;
+  getSubForm<Prefix extends DeepKeys<T>>(
+    options: Omit<CreateSubFormOptions<T, Prefix>, 'formApi'>
+  ): IFormApi<DeepValue<T, Prefix>>;
 }
 
 export interface IPureFieldApi<Value> {
@@ -169,4 +172,25 @@ export interface CreateFormOptions<T> {
   initialValues: T;
   validators?: FormValidatorsMap<T>;
   interactions?: FormInteraction<T>[];
+}
+
+export interface CreateSubFormOptions<T, Prefix extends DeepKeys<T>> {
+  formApi: IFormApi<T>;
+  prefix: Prefix;
+  validators?: FormValidatorsMap<DeepValue<T, Prefix>>;
+  interactions?: FormInteraction<DeepValue<T, Prefix>>[];
+}
+
+export const EMPTY_VALIDATION_STATE: FormValidationState = {
+  isValidating: false,
+  isValid: true,
+  message: undefined,
+};
+
+export type ValidateFn = () => Promise<void>;
+
+export interface CompiledValidator {
+  validateFn: ValidateFn;
+  validationStates: FormValidationState;
+  subscribes: UnSubscribeFn[];
 }

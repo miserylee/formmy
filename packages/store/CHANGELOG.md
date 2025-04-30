@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/miserylee/formmy/compare/v0.10.1...v0.11.0) (2025-04-30)
+
+### Features
+
+* add SubFormApi ([9a056da](https://github.com/miserylee/formmy/commit/9a056da315c4a54fcede62c917ce1d2b2e13e1a4))
+
 # [0.10.0](https://github.com/miserylee/formmy/compare/v0.9.0...v0.10.0) (2025-02-08)
 
 **Note:** Version bump only for package @formmy/store

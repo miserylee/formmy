@@ -1,19 +1,9 @@
-import {
-  type ForwardedRef,
-  forwardRef,
-  type PropsWithChildren,
-  type ReactElement,
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-} from 'react';
+import { type ForwardedRef, forwardRef, type PropsWithChildren, type ReactElement, useMemo } from 'react';
 
 import { type CreateFormOptions, type IFormApi, FormApi, type FormValidateResult } from '@formmy/core';
 
 import { FormContext } from './FormContext';
-import { useUpdatingRef } from './helpers/useUpdatingRef';
+import { FormInternal } from './internal/FormInternal';
 
 export interface FormProps<T> extends CreateFormOptions<T> {
   values?: T;
@@ -21,52 +11,15 @@ export interface FormProps<T> extends CreateFormOptions<T> {
   onValidationStatesChange?(states: FormValidateResult<T>): void;
 }
 
-export const Form = forwardRef(
-  (
-    { initialValues, children, validators, interactions, values, onValidationStatesChange, onValuesChange },
-    ref
-  ) => {
-    const formApi = useMemo(() => new FormApi({ initialValues, validators, interactions }), []);
+export const Form = forwardRef(({ initialValues, validators, interactions, children, ...props }, ref) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const formApi = useMemo(() => new FormApi<any>({ initialValues, validators, interactions }), []);
 
-    useImperativeHandle(ref, () => formApi, []);
-
-    const onValuesChangeRef = useUpdatingRef(onValuesChange);
-    const onValidationStatesChangeRef = useUpdatingRef(onValidationStatesChange);
-
-    const lastUpdatedValuesRef = useRef(values);
-
-    useEffect(() => {
-      formApi.subscribe('values', {
-        listener: (_values) => {
-          if (lastUpdatedValuesRef.current !== _values) {
-            onValuesChangeRef.current?.(_values);
-          }
-        },
-        immediate: true,
-      });
-      formApi.subscribe('errors', {
-        listener: () => {
-          onValidationStatesChangeRef.current?.(formApi.getValidationStates());
-        },
-      });
-      return () => {
-        formApi.destroy();
-      };
-    }, [formApi]);
-
-    // 受控组件，值不一致时，强制设置 values
-    useLayoutEffect(() => {
-      if (!values || [lastUpdatedValuesRef.current, formApi.getValues()].includes(values)) {
-        return;
-      }
-      lastUpdatedValuesRef.current = values;
-      formApi.setValues(values);
-    });
-
-    return (
-      <FormContext.Provider value={{ formApi: formApi as IFormApi<unknown> }}>
+  return (
+    <FormContext.Provider value={formApi}>
+      <FormInternal {...props} _ref={ref} formApi={formApi}>
         {children}
-      </FormContext.Provider>
-    );
-  }
-) as <T>(props: PropsWithChildren<FormProps<T>> & { ref?: ForwardedRef<IFormApi<T>> }) => ReactElement;
+      </FormInternal>
+    </FormContext.Provider>
+  );
+}) as <T>(props: PropsWithChildren<FormProps<T>> & { ref?: ForwardedRef<IFormApi<T>> }) => ReactElement;

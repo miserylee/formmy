@@ -9,6 +9,7 @@ import get from 'lodash.get';
 import set from 'lodash.set';
 
 import { FieldApi } from './FieldApi';
+import { SubFormApi } from './SubFormApi';
 import {
   type CreateFormOptions,
   type DeepKeys,
@@ -23,23 +24,13 @@ import {
   type FormValidatorsMap,
   type FormValidatorWithDeps,
   type FormInteraction,
+  type CreateSubFormOptions,
+  type ValidateFn,
+  EMPTY_VALIDATION_STATE,
+  type CompiledValidator,
 } from './types';
 
 const immer = new Immer({ autoFreeze: false });
-
-type ValidateFn = () => Promise<void>;
-
-const EMPTY_VALIDATION_STATE: FormValidationState = {
-  isValidating: false,
-  isValid: true,
-  message: undefined,
-};
-
-interface CompiledValidator {
-  validateFn: ValidateFn;
-  validationStates: FormValidationState;
-  subscribes: UnSubscribeFn[];
-}
 
 export class FormApi<T> implements IFormApi<T> {
   private validators: Store<FormValidatorsMap<T>>;
@@ -76,6 +67,7 @@ export class FormApi<T> implements IFormApi<T> {
     // 当校验器发生变更时，重新编译校验器
     this.validators.subscribe({
       listener: () => this.recompileValidators(),
+      immediate: true,
     });
 
     // 初始编译一次联动器
@@ -83,6 +75,7 @@ export class FormApi<T> implements IFormApi<T> {
     // 当联动器发生变更时，重新编译联动器
     this.interactions.subscribe({
       listener: () => this.recompileInteractions(),
+      immediate: true,
     });
   }
 
@@ -284,7 +277,7 @@ export class FormApi<T> implements IFormApi<T> {
   getValidationState = (key: DeepKeys<T>): FormValidationState =>
     this.validationStates.state[key] ?? { ...EMPTY_VALIDATION_STATE };
 
-  getField = <Key extends DeepKeys<T>>(key: Key): IFieldApi<T, Key> => new FieldApi(key, this);
+  getField = <Key extends DeepKeys<T>>(key: Key): IFieldApi<T, Key> => new FieldApi<T, Key>(key, this);
 
   getValue = <Key extends DeepKeys<T>>(key: Key): DeepValue<T, Key> => {
     if (key === '.') {
@@ -312,13 +305,13 @@ export class FormApi<T> implements IFormApi<T> {
     this.validationStates.reset();
   };
 
-  resetValidationState(key: DeepKeys<T>): void {
+  resetValidationState = (key: DeepKeys<T>): void => {
     this.validationStates.update((prev) => {
       const next = { ...prev };
       Reflect.deleteProperty(next, key);
       return next;
     });
-  }
+  };
 
   setValidators = (updater: StateUpdater<FormValidatorsMap<T>>): void => {
     this.validators.update(updater);
@@ -371,6 +364,8 @@ export class FormApi<T> implements IFormApi<T> {
     };
 
     if (key !== undefined) {
+      // 先重置该字段的校验状态
+      this.resetValidationState(key);
       // 触发单个字段的校验器
       const compiledValidatorsMap = this.compiledValidators.get(key);
       if (compiledValidatorsMap) {
@@ -380,6 +375,8 @@ export class FormApi<T> implements IFormApi<T> {
       }
       return { ...EMPTY_VALIDATION_STATE };
     }
+    // 先重置所有校验状态
+    this.resetValidationStates();
     // 触发所有字段的校验器，包含被动触发的校验器
     [...this.compiledValidators.values()].forEach((validators) => {
       [...validators.values()].forEach((v) => willRunValidators.add(v));
@@ -488,5 +485,15 @@ export class FormApi<T> implements IFormApi<T> {
     this.interactionQueue.clear();
     this.interactions.clear();
     this.cycleInteractionDetectingQueue = [];
+  };
+
+  // 获取子表单实例
+  getSubForm = <Prefix extends DeepKeys<T>>(
+    options: Omit<CreateSubFormOptions<T, Prefix>, 'formApi'>
+  ): IFormApi<DeepValue<T, Prefix>> => {
+    return new SubFormApi<T, Prefix>({
+      ...options,
+      formApi: this,
+    });
   };
 }

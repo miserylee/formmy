@@ -7,6 +7,8 @@ import { LoginForm } from './examples/LoginForm';
 
 import { type ReactNode, useState } from 'react';
 
+import { SubForm } from './examples/SubForm';
+
 interface Story {
   id: string;
   label: string;
@@ -16,6 +18,7 @@ interface Story {
 const stories: Story[] = [
   { id: 'login', label: 'LoginForm', component: <LoginForm /> },
   { id: 'interaction', label: 'Interaction', component: <InteractionForm /> },
+  { id: 'subform', label: 'SubForm', component: <SubForm /> },
 ];
 
 function App() {

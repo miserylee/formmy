@@ -1,35 +1,19 @@
-import { type MutableRefObject, type ReactElement, type ReactNode, useMemo, useReducer } from 'react';
-
-import { type IFormApi } from '@formmy/core';
+import { type ReactNode } from 'react';
 
 import { FormContext } from './FormContext';
+import { type FormBridge, type FormBridgeRefType, useFormBridgeRef } from './internal/useFormBridgeRef';
 
-export type FormBridgeRefType<T> = MutableRefObject<IFormApi<T> | null> &
-  ((formApi: IFormApi<T> | null) => void);
-
-export interface FormBridge<T> {
-  ref: FormBridgeRefType<T>;
-  renderFormExt: (children: ReactNode) => ReactElement | null;
-}
+export { type FormBridge, type FormBridgeRefType };
 
 export function useFormBridge<T>(): FormBridge<T> {
-  const [, reload] = useReducer((p) => p + 1, 0);
-  const ref = useMemo(() => {
-    const fn: FormBridgeRefType<T> = (formApi: IFormApi<T> | null) => {
-      fn.current = formApi;
-      // trigger renderFormExt
-      reload();
-    };
-    fn.current = null as IFormApi<T> | null;
-    return fn;
-  }, []);
+  const ref = useFormBridgeRef<T>();
   return {
     ref,
     renderFormExt: (children: ReactNode) => {
       if (!ref.current) {
         return null;
       }
-      return <FormContext.Provider value={{ formApi: ref.current }}>{children}</FormContext.Provider>;
+      return <FormContext.Provider value={ref.current}>{children}</FormContext.Provider>;
     },
   };
 }

@@ -2,7 +2,10 @@ import { createContext } from 'react';
 
 import { type IFormApi } from '@formmy/core';
 
-export const FormContext = createContext<{
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const FormContext = createContext<IFormApi<any> | undefined>(undefined);
+
+export function createFormContext(): typeof FormContext {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  formApi?: IFormApi<any>;
-}>({});
+  return createContext<IFormApi<any> | undefined>(undefined);
+}

@@ -1,42 +1,44 @@
 {
   "name": "@formmy/core",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "description": "一个简单但是够用的表单核心库",
-  "author": "MiseryLee <miserylee@foxmail.com>",
   "homepage": "https://github.com/miserylee/formmy#readme",
-  "license": "MIT",
-  "main": "src/index.ts",
-  "files": [
-    "lib"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "main": "lib/index.js"
+  "bugs": {
+    "url": "https://github.com/miserylee/formmy/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/miserylee/formmy.git"
   },
+  "license": "MIT",
+  "author": "MiseryLee <miserylee@foxmail.com>",
+  "main": "src/index.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
-    "lint": "eslint . --cache",
-    "test": "exit 0",
     "build": "tsc",
+    "lint": "eslint . --cache",
+    "test": "vitest",
+    "test:cov": "vitest --run --coverage",
     "version": "npm run build"
-  },
-  "bugs": {
-    "url": "https://github.com/miserylee/formmy/issues"
-  },
-  "devDependencies": {
-    "@formmy/configs": "workspace:*",
-    "@types/lodash.get": "^4.4.9",
-    "@types/lodash.set": "^4.3.9",
-    "eslint": "^8.57.0",
-    "typescript": "^5.3.3"
   },
   "dependencies": {
     "@formmy/store": "workspace:*",
     "immer": "^10.0.4",
     "lodash.get": "^4.4.2",
     "lodash.set": "^4.3.2"
+  },
+  "devDependencies": {
+    "@formmy/configs": "workspace:*",
+    "@types/lodash.get": "^4.4.9",
+    "@types/lodash.set": "^4.3.9",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3",
+    "vitest": "^2.0.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "lib/index.js"
   }
 }

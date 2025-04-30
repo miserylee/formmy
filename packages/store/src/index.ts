@@ -2,6 +2,24 @@ import { type Listener, type StateUpdater, type SubscribeOptions, type UnSubscri
 
 export * from './types';
 
+function isShallowEquals(prev: unknown, current: unknown): boolean {
+  if (prev === current) {
+    return prev === current;
+  }
+  if (Array.isArray(prev) && Array.isArray(current)) {
+    return prev.length === current.length && prev.every((item, index) => current[index] === item);
+  }
+  if (!!prev && !!current && typeof prev === 'object' && typeof current === 'object') {
+    const prevKeys = Object.keys(prev);
+    const currentKeys = Object.keys(current);
+    return (
+      prevKeys.length === currentKeys.length &&
+      prevKeys.every((key) => Reflect.get(current, key) === Reflect.get(prev, key))
+    );
+  }
+  return false;
+}
+
 export function updateState<T>(state: T, updater: StateUpdater<T>): T {
   if (updater instanceof Function) {
     return updater(state);
@@ -33,7 +51,7 @@ export default class Store<T> {
     let prevValue = selector(this.state);
     const callback: Listener<T> = (values) => {
       const currentValue = selector(values);
-      const valueChanged = prevValue !== currentValue;
+      const valueChanged = !isShallowEquals(prevValue, currentValue);
       // 先记录变化后的值，避免在触发 listener 的过程中再次触发该事件时，下次比较还是变更的，导致死循环的问题
       prevValue = currentValue;
       if (valueChanged) {

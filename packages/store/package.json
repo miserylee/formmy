@@ -1,36 +1,36 @@
 {
   "name": "@formmy/store",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "description": "一个简单但是够用的状态管理库",
-  "author": "MiseryLee <miserylee@foxmail.com>",
   "homepage": "https://github.com/miserylee/formmy#readme",
-  "license": "MIT",
-  "main": "src/index.ts",
-  "files": [
-    "lib"
-  ],
-  "publishConfig": {
-    "access": "public",
-    "main": "lib/index.js"
+  "bugs": {
+    "url": "https://github.com/miserylee/formmy/issues"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/miserylee/formmy.git"
   },
+  "license": "MIT",
+  "author": "MiseryLee <miserylee@foxmail.com>",
+  "main": "src/index.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
+    "build": "tsc",
     "lint": "eslint . --cache",
     "test": "vitest",
     "test:cov": "vitest run --coverage",
-    "build": "tsc",
     "version": "npm run build"
-  },
-  "bugs": {
-    "url": "https://github.com/miserylee/formmy/issues"
   },
   "devDependencies": {
     "@formmy/configs": "workspace:*",
     "eslint": "^8.57.0",
     "typescript": "^5.3.3",
     "vitest": "^2.0.4"
+  },
+  "publishConfig": {
+    "access": "public",
+    "main": "lib/index.js"
   }
 }
