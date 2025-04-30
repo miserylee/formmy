@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/miserylee/formmy/compare/v0.10.1...v0.12.0) (2025-04-30)
+
+### Features
+
+* add SubFormApi ([a3563c3](https://github.com/miserylee/formmy/commit/a3563c3cce97536da2c8441b25ea3f5691810a44))
+
 # [0.11.0](https://github.com/miserylee/formmy/compare/v0.10.1...v0.11.0) (2025-04-30)
 
 ### Features
