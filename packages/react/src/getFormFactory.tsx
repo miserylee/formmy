@@ -42,7 +42,7 @@ export function getFormFactory<T>(): {
   };
 }
 
-interface SubFormFactory<T, Prefix extends DeepKeys<T>> {
+export interface SubFormFactory<T, Prefix extends DeepKeys<T>> {
   Form: (
     props: PropsWithChildren<Omit<FormProps<DeepValue<T, Prefix>>, 'initialValues'>> & {
       ref?: ForwardedRef<IFormApi<DeepValue<T, Prefix>>>;
