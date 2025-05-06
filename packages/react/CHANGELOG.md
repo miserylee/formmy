@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.2](https://github.com/miserylee/formmy/compare/v0.12.1...v0.12.2) (2025-05-06)
+
+### Bug Fixes
+
+* export SubFormFactory type ([7e25fbe](https://github.com/miserylee/formmy/commit/7e25fbe08c8e7b1933cc1f217cadaafa3b060597))
+
 ## [0.12.1](https://github.com/miserylee/formmy/compare/v0.12.0...v0.12.1) (2025-05-06)
 
 ### Bug Fixes
