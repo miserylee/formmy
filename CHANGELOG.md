@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.1](https://github.com/miserylee/formmy/compare/v0.12.0...v0.12.1) (2025-05-06)
+
+### Bug Fixes
+
+* add tsconfig.build.json ([f28fcd6](https://github.com/miserylee/formmy/commit/f28fcd66850d043b2bbcf0c747d302c30e2cf162))
+
 # [0.12.0](https://github.com/miserylee/formmy/compare/v0.10.1...v0.12.0) (2025-04-30)
 
 ### Features
