@@ -72,6 +72,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
         restMap: FormValidatorsMap<U>;
       }>(
         (acc, [key, mainFormValidators]) => {
+          if (!mainFormValidators) {
+            return acc;
+          }
           if (this.isSubFormKey(key)) {
             acc.subFormMap[this.subKey(key)] = mainFormValidators.map((v: FormValidator<U, any>) => {
               const cachedValidator = this.reversedValidatorsMap.get(v);
@@ -115,6 +118,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
       );
       const next = updateState(subFormMap, updater);
       const updatedMap = Object.entries(next).reduce<FormValidatorsMap<U>>((acc, [key, validators]) => {
+        if (!validators) {
+          return acc;
+        }
         acc[this.prefixKey(key)] = validators.map((v: FormValidator<DeepValue<U, Prefix>, any>) => {
           const cachedValidator = this.validatorsMap.get(v);
           if (cachedValidator) {
@@ -194,6 +200,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
         restMap: FormErrorsMap<U>;
       }>(
         (acc, [key, state]) => {
+          if (!state) {
+            return acc;
+          }
           if (this.isSubFormKey(key)) {
             acc.subFormMap[this.subKey(key)] = state;
           } else {
@@ -210,6 +219,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
       return {
         ...restMap,
         ...Object.entries(next).reduce<FormErrorsMap<U>>((acc, [key, state]) => {
+          if (!state) {
+            return acc;
+          }
           acc[this.prefixKey(key)] = state;
           return acc;
         }, {}),
@@ -235,6 +247,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
       FormValidateResult<DeepValue<U, Prefix>>
     >(
       (acc, [key, _state]) => {
+        if (!_state) {
+          return acc;
+        }
         const state = _state as FormValidationState;
         if (this.isSubFormKey(key)) {
           acc.errors[this.subKey(key)] = state;
@@ -333,6 +348,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
           ...options,
           selector: (state) =>
             Object.entries(state).reduce<FormErrorsMap<DeepValue<U, Prefix>>>((acc, [key, _state]) => {
+              if (!_state) {
+                return acc;
+              }
               if (this.isSubFormKey(key)) {
                 acc[this.subKey(key)] = _state;
               }
