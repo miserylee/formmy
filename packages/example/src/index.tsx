@@ -2,6 +2,7 @@ import ReactDOM from 'react-dom';
 
 import 'tailwindcss/base.css';
 import 'tailwindcss/utilities.css';
+import { FormBinding } from './examples/FormBinding';
 import { InteractionForm } from './examples/InteractionForm';
 import { LoginForm } from './examples/LoginForm';
 
@@ -19,6 +20,7 @@ const stories: Story[] = [
   { id: 'login', label: 'LoginForm', component: <LoginForm /> },
   { id: 'interaction', label: 'Interaction', component: <InteractionForm /> },
   { id: 'subform', label: 'SubForm', component: <SubForm /> },
+  { id: 'form-binding', label: 'FormBinding', component: <FormBinding /> },
 ];
 
 function App() {

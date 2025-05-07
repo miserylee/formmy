@@ -50,6 +50,7 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
   private isSubFormKey(key: string): boolean {
     return (
       key === this.options.prefix ||
+      this.options.prefix === '.' ||
       (key.startsWith(this.options.prefix) && key.at(this.options.prefix.length) === '.')
     );
   }
@@ -58,10 +59,16 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     if (key === '.') {
       return this.options.prefix;
     }
+    if (this.options.prefix === '.') {
+      return key as DeepKeys<U>;
+    }
     return `${this.options.prefix}.${key}` as DeepKeys<U>;
   }
 
   private subKey(key: string): DeepKeys<DeepValue<U, Prefix>> {
+    if (this.options.prefix === '.') {
+      return key as DeepKeys<DeepValue<U, Prefix>>;
+    }
     return (key.slice(this.options.prefix.length + 1) || '.') as DeepKeys<DeepValue<U, Prefix>>;
   }
 

@@ -19,48 +19,43 @@ import { SubscribeInternal } from './internal/SubscribeInternal';
 import { useFormBridgeRef } from './internal/useFormBridgeRef';
 import { Subscribe, type SubscribeProps } from './Subscribe';
 import { useField } from './useField';
-import { useForm } from './useForm';
+import { useForm as useFormInternal } from './useForm';
 import { type FormBridge, useFormBridge } from './useFormBridge';
 
-export function getFormFactory<T>(): {
-  Form: (props: PropsWithChildren<FormProps<T>> & { ref?: ForwardedRef<IFormApi<T>> }) => ReactElement;
+export interface FormFactory<T, Sub extends boolean = false> {
+  Form: (
+    props: PropsWithChildren<Sub extends false ? FormProps<T> : Omit<FormProps<T>, 'initialValues'>> & {
+      ref?: ForwardedRef<IFormApi<T>>;
+    }
+  ) => ReactNode;
   Field: <Key extends DeepKeys<T>>(props: FieldProps<T, Key>) => ReactElement;
   Subscribe: (props: SubscribeProps<T>) => ReactElement;
   useForm: () => IFormApi<T>;
   useField: <Key extends DeepKeys<T>>(key: Key) => IFieldApi<T, Key>;
   useFormBridge: () => FormBridge<T>;
-  getSubFormFactory: <Prefix extends DeepKeys<T>>(prefix: Prefix) => SubFormFactory<T, Prefix>;
-} {
+  getSubFormFactory: <Prefix2 extends DeepKeys<T>>(prefix: Prefix2) => SubFormFactory<T, Prefix2>;
+}
+
+export type SubFormFactory<T, Prefix extends DeepKeys<T>> = FormFactory<DeepValue<T, Prefix>, true>;
+
+export function getFormFactory<T>(): FormFactory<T>;
+export function getFormFactory<T>(useForm: () => IFormApi<T>): FormFactory<T, true>;
+export function getFormFactory<T>(useForm?: () => IFormApi<T>): FormFactory<T> {
+  if (useForm) {
+    return getSubFormFactory('.', useForm);
+  }
   return {
     Form: Form<T>,
     Field: Field,
     Subscribe: Subscribe<T>,
-    useForm: useForm<T>,
+    useForm: useFormInternal<T>,
     useField: useField,
     useFormBridge: useFormBridge<T>,
-    getSubFormFactory: (prefix) => getSubFormFactory(prefix, useForm<T>),
+    getSubFormFactory: (prefix) => getSubFormFactory(prefix, useFormInternal<T>),
   };
 }
 
-export interface SubFormFactory<T, Prefix extends DeepKeys<T>> {
-  Form: (
-    props: PropsWithChildren<Omit<FormProps<DeepValue<T, Prefix>>, 'initialValues'>> & {
-      ref?: ForwardedRef<IFormApi<DeepValue<T, Prefix>>>;
-    }
-  ) => ReactNode;
-  Field: <Key extends DeepKeys<DeepValue<T, Prefix>>>(
-    props: FieldProps<DeepValue<T, Prefix>, Key>
-  ) => ReactElement;
-  Subscribe: (props: SubscribeProps<DeepValue<T, Prefix>>) => ReactElement;
-  useForm: () => IFormApi<DeepValue<T, Prefix>>;
-  useField: <Key extends DeepKeys<DeepValue<T, Prefix>>>(key: Key) => IFieldApi<DeepValue<T, Prefix>, Key>;
-  useFormBridge: () => FormBridge<DeepValue<T, Prefix>>;
-  getSubFormFactory: <Prefix2 extends DeepKeys<DeepValue<T, Prefix>>>(
-    prefix: Prefix2
-  ) => SubFormFactory<DeepValue<T, Prefix>, Prefix2>;
-}
-
-function getSubFormFactory<T, Prefix extends DeepKeys<T>>(
+export function getSubFormFactory<T, Prefix extends DeepKeys<T>>(
   prefix: Prefix,
   useParentForm: () => IFormApi<T>
 ): SubFormFactory<T, Prefix> {

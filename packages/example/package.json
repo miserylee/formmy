@@ -1,22 +1,29 @@
 {
   "name": "@formmy/example",
   "version": "0.12.4",
-  "description": "一个简单但是够用的表单示例包",
-  "author": "MiseryLee <miserylee@foxmail.com>",
-  "homepage": "https://github.com/miserylee/formmy#readme",
-  "license": "MIT",
   "private": true,
+  "description": "一个简单但是够用的表单示例包",
+  "homepage": "https://github.com/miserylee/formmy#readme",
+  "bugs": {
+    "url": "https://github.com/miserylee/formmy/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/miserylee/formmy.git"
   },
+  "license": "MIT",
+  "author": "MiseryLee <miserylee@foxmail.com>",
   "scripts": {
-    "lint": "eslint . --cache",
     "dev": "rspack serve",
+    "lint": "eslint . --cache",
     "test": "exit 0"
   },
-  "bugs": {
-    "url": "https://github.com/miserylee/formmy/issues"
+  "dependencies": {
+    "@formmy/core": "workspace:*",
+    "@formmy/react": "workspace:*",
+    "classnames": "^2.5.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@formmy/configs": "workspace:*",
@@ -32,11 +39,5 @@
     "tailwindcss": "^3.4.6",
     "typescript": "^5.3.3",
     "webpack": "^5.91.0"
-  },
-  "dependencies": {
-    "@formmy/react": "workspace:*",
-    "classnames": "^2.5.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0"
   }
 }

@@ -497,4 +497,28 @@ describe('SubFormApi', () => {
     await delay();
     expect(mockErrorsListener).toBeCalled();
   });
+  it('should work as expected when prefix is .', async () => {
+    const formApi = new FormApi({
+      initialValues: {
+        foo: 'foo',
+        bar: 'bar',
+      },
+      validators: {
+        foo: [(v) => (!v ? 'required' : undefined)],
+      },
+    });
+    const subFormApi = formApi.getSubForm({
+      prefix: '.',
+      validators: {
+        bar: [(v) => (!v ? 'required' : undefined)],
+      },
+    });
+    expect(subFormApi.getValue('foo')).toBe('foo');
+    subFormApi.setValue('bar', '');
+    await delay();
+    expect(subFormApi.getValidationState('bar').isValid).toBeFalsy();
+    formApi.setValue('foo', '');
+    await delay();
+    expect(subFormApi.getValidationState('foo').isValid).toBeFalsy();
+  });
 });
