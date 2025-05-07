@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { FormApi } from '@formmy/core';
 import { type FormFactory, getFormFactory } from '@formmy/react';
@@ -82,22 +82,20 @@ function FormA() {
   );
 }
 
+const sharedFormBApi = new FormApi<FormB>({
+  initialValues: {
+    bar: 'bar',
+    nested: {
+      common: {
+        label: 'b label',
+        value: 'b value',
+      },
+    },
+  },
+});
+
 const formBFactory = getFormFactory<FormB>(function useForm() {
-  return useMemo(
-    () =>
-      new FormApi<FormB>({
-        initialValues: {
-          bar: 'bar',
-          nested: {
-            common: {
-              label: 'b label',
-              value: 'b value',
-            },
-          },
-        },
-      }),
-    []
-  );
+  return sharedFormBApi;
 });
 
 function FormB() {
@@ -131,6 +129,8 @@ export function FormBinding(): JSX.Element {
   return (
     <div className="flex gap-4 items-start">
       <FormA />
+      <FormA />
+      <FormB />
       <FormB />
     </div>
   );
