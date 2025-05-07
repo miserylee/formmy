@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.12.4](https://github.com/miserylee/formmy/compare/v0.12.3...v0.12.4) (2025-05-07)
+
+### Bug Fixes
+
+* add isValueChanged for subscribe selector ([b635e62](https://github.com/miserylee/formmy/commit/b635e629600e982ab0185875b716b334acf79bd4))
+
 ## [0.12.3](https://github.com/miserylee/formmy/compare/v0.12.2...v0.12.3) (2025-05-06)
 
 ### Bug Fixes
