@@ -356,6 +356,14 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
               }
               return acc;
             }, {}),
+          isValueChanged: (prev, current) => {
+            const prevKeys = Object.keys(prev);
+            const currentKeys = Object.keys(current);
+            return !(
+              prevKeys.length === currentKeys.length &&
+              prevKeys.every((key) => Reflect.get(current, key) === Reflect.get(prev, key))
+            );
+          },
         });
       case 'values':
         return this.options.formApi.subscribe('values', {

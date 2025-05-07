@@ -1,24 +1,12 @@
-import { type Listener, type StateUpdater, type SubscribeOptions, type UnSubscribeFn } from './types';
+import {
+  type Listener,
+  type Selector,
+  type StateUpdater,
+  type SubscribeOptions,
+  type UnSubscribeFn,
+} from './types';
 
 export * from './types';
-
-function isShallowEquals(prev: unknown, current: unknown): boolean {
-  if (prev === current) {
-    return prev === current;
-  }
-  if (Array.isArray(prev) && Array.isArray(current)) {
-    return prev.length === current.length && prev.every((item, index) => current[index] === item);
-  }
-  if (!!prev && !!current && typeof prev === 'object' && typeof current === 'object') {
-    const prevKeys = Object.keys(prev);
-    const currentKeys = Object.keys(current);
-    return (
-      prevKeys.length === currentKeys.length &&
-      prevKeys.every((key) => Reflect.get(current, key) === Reflect.get(prev, key))
-    );
-  }
-  return false;
-}
 
 export function updateState<T>(state: T, updater: StateUpdater<T>): T {
   if (updater instanceof Function) {
@@ -26,6 +14,11 @@ export function updateState<T>(state: T, updater: StateUpdater<T>): T {
   }
   return updater;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const DEFAULT_SELECTOR: Selector<any, any> = (s) => s;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const DEFAULT_IS_VALUE_CHANGED = (prev: any, current: any) => prev !== current;
 
 export default class Store<T> {
   private listeners = new Set<Listener<T>>();
@@ -43,7 +36,8 @@ export default class Store<T> {
   }
 
   subscribe<V = T>({
-    selector = (s) => s as unknown as V,
+    selector = DEFAULT_SELECTOR,
+    isValueChanged = DEFAULT_IS_VALUE_CHANGED,
     listener,
     immediate,
     ignoreReset,
@@ -51,7 +45,7 @@ export default class Store<T> {
     let prevValue = selector(this.state);
     const callback: Listener<T> = (values) => {
       const currentValue = selector(values);
-      const valueChanged = !isShallowEquals(prevValue, currentValue);
+      const valueChanged = isValueChanged(prevValue, currentValue);
       // 先记录变化后的值，避免在触发 listener 的过程中再次触发该事件时，下次比较还是变更的，导致死循环的问题
       prevValue = currentValue;
       if (valueChanged) {

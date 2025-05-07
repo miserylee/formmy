@@ -6,6 +6,7 @@ export type SubscribeOptions<T, V> = {
   selector?: Selector<T, V>;
   immediate?: boolean;
   ignoreReset?: boolean;
+  isValueChanged?: (prev: V, current: V) => boolean;
 };
 export type UnSubscribeFn = () => void;
 

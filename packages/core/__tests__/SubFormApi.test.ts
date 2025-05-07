@@ -467,4 +467,34 @@ describe('SubFormApi', () => {
     expect(nestedFormApi.getValidationState('foo').isValid).toBeFalsy();
     expect(subFormApi.getValidationState('nested.foo').isValid).toBeFalsy();
   });
+  it('should not trigger errors subscriber when changed errors not in sub form', async () => {
+    const formApi = new FormApi({
+      initialValues: {
+        foo: 'foo',
+        bar: {
+          a: 'a',
+          b: 'b',
+        },
+      },
+      validators: {
+        foo: [(v) => (!v ? 'required' : undefined)],
+      },
+    });
+    const subFormApi = formApi.getSubForm({
+      prefix: 'bar',
+      validators: {
+        a: [(v) => (!v ? 'required' : undefined)],
+      },
+    });
+    const mockErrorsListener = vi.fn();
+    subFormApi.subscribe('errors', {
+      listener: mockErrorsListener,
+    });
+    await formApi.validate('foo');
+    await delay();
+    expect(mockErrorsListener).not.toBeCalled();
+    await formApi.validate('bar.a');
+    await delay();
+    expect(mockErrorsListener).toBeCalled();
+  });
 });
