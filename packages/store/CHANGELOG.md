@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/miserylee/formmy/compare/v0.12.4...v0.13.0) (2025-05-07)
+
+**Note:** Version bump only for package @formmy/store
+
 ## [0.12.4](https://github.com/miserylee/formmy/compare/v0.12.3...v0.12.4) (2025-05-07)
 
 ### Bug Fixes

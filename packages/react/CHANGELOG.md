@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.13.0](https://github.com/miserylee/formmy/compare/v0.12.4...v0.13.0) (2025-05-07)
+
+### Features
+
+* support form binding ([b66a33e](https://github.com/miserylee/formmy/commit/b66a33e927bcff71e1081a7470f0ef10ad82371b))
+
 ## [0.12.4](https://github.com/miserylee/formmy/compare/v0.12.3...v0.12.4) (2025-05-07)
 
 **Note:** Version bump only for package @formmy/react
