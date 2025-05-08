@@ -79,7 +79,16 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
       // remove prev validators from main form
       const nextValidatorsMap = Object.entries(prev).reduce<FormValidatorsMap<U>>(
         (acc, [key, mainFormValidators]) => {
-          if (!mainFormValidators || !this.isSubFormKey(key)) {
+          if (!mainFormValidators) {
+            return acc;
+          }
+          if (!this.isSubFormKey(key)) {
+            acc[key as DeepKeys<U>] = mainFormValidators;
+            return acc;
+          }
+          const subKey = this.subKey(key);
+          if (!this.validators[subKey]) {
+            acc[key as DeepKeys<U>] = mainFormValidators;
             return acc;
           }
           acc[key as DeepKeys<U>] = mainFormValidators.filter((v: FormValidator<U, any>) => {
@@ -87,7 +96,7 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
             if (!cachedValidator) {
               return true;
             }
-            return !this.validators[this.subKey(key)]?.includes(cachedValidator);
+            return !this.validators[subKey]?.includes(cachedValidator);
           });
           return acc;
         },
