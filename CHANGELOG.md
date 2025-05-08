@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.1](https://github.com/miserylee/formmy/compare/v0.13.0...v0.13.1) (2025-05-08)
+
+### Bug Fixes
+
+* should use final message when merge validation states ([d9d7bf8](https://github.com/miserylee/formmy/commit/d9d7bf84067a0b32c6c532f04624e090abfbb196))
+
 # [0.13.0](https://github.com/miserylee/formmy/compare/v0.12.4...v0.13.0) (2025-05-07)
 
 ### Features
