@@ -22,6 +22,7 @@ import {
 } from './types';
 
 export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepValue<U, Prefix>> {
+  private validators: FormValidatorsMap<DeepValue<U, Prefix>> = {};
   private validatorsMap = new WeakMap<FormValidator<DeepValue<U, Prefix>, any>, FormValidator<U, any>>();
   private reversedValidatorsMap = new WeakMap<
     FormValidator<U, any>,
@@ -74,99 +75,70 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
 
   setValidators = (updater: StateUpdater<FormValidatorsMap<DeepValue<U, Prefix>>>): void => {
     this.options.formApi.setValidators((prev) => {
-      const { subFormMap, restMap } = Object.entries(prev).reduce<{
-        subFormMap: FormValidatorsMap<DeepValue<U, Prefix>>;
-        restMap: FormValidatorsMap<U>;
-      }>(
+      const next = updateState(this.validators, updater);
+      // remove prev validators from main form
+      const nextValidatorsMap = Object.entries(prev).reduce<FormValidatorsMap<U>>(
         (acc, [key, mainFormValidators]) => {
-          if (!mainFormValidators) {
+          if (!mainFormValidators || !this.isSubFormKey(key)) {
             return acc;
           }
-          if (this.isSubFormKey(key)) {
-            acc.subFormMap[this.subKey(key)] = mainFormValidators.map((v: FormValidator<U, any>) => {
-              const cachedValidator = this.reversedValidatorsMap.get(v);
-              if (cachedValidator) {
-                return cachedValidator;
-              }
-              // normalize validator to sub form validator
-              let _validator: FormValidatorWithDeps<DeepValue<U, Prefix>, any>;
-              if (typeof v === 'function') {
-                _validator = {
-                  validate: (value) => {
-                    return v(value as DeepValue<U, any>, this.options.formApi.getField(key as DeepKeys<U>));
-                  },
-                  deps: [],
-                };
-              } else {
-                _validator = {
-                  ...v,
-                  validate: (value) => {
-                    return v.validate(
-                      value as DeepValue<U, any>,
-                      this.options.formApi.getField(key as DeepKeys<U>)
-                    );
-                  },
-                  deps: v.deps?.map((dep) => this.subKey(dep)),
-                };
-              }
-              this.validatorsMap.set(_validator, v);
-              this.reversedValidatorsMap.set(v, _validator);
-              return _validator;
-            });
-          } else {
-            acc.restMap[key as DeepKeys<U>] = mainFormValidators;
-          }
+          acc[key as DeepKeys<U>] = mainFormValidators.filter((v: FormValidator<U, any>) => {
+            const cachedValidator = this.reversedValidatorsMap.get(v);
+            if (!cachedValidator) {
+              return true;
+            }
+            return !this.validators[this.subKey(key)]?.includes(cachedValidator);
+          });
           return acc;
         },
-        {
-          subFormMap: {},
-          restMap: {},
-        }
+        {}
       );
-      const next = updateState(subFormMap, updater);
-      const updatedMap = Object.entries(next).reduce<FormValidatorsMap<U>>((acc, [key, validators]) => {
+      // add next validators into map
+      Object.entries(next).forEach(([key, validators]) => {
         if (!validators) {
-          return acc;
+          return;
         }
-        acc[this.prefixKey(key)] = validators.map((v: FormValidator<DeepValue<U, Prefix>, any>) => {
-          const cachedValidator = this.validatorsMap.get(v);
-          if (cachedValidator) {
-            return cachedValidator;
-          }
-          // normalize validator to main form validator
-          let _validator: FormValidatorWithDeps<U, any>;
-          if (typeof v === 'function') {
-            _validator = {
-              validate: (value) => {
-                return v(
-                  value as DeepValue<DeepValue<U, Prefix>, any>,
-                  this.getField(key as DeepKeys<DeepValue<U, Prefix>>)
-                );
-              },
-              deps: [],
-            };
-          } else {
-            _validator = {
-              ...v,
-              validate: (value) => {
-                return v.validate(
-                  value as DeepValue<DeepValue<U, Prefix>, any>,
-                  this.getField(key as DeepKeys<DeepValue<U, Prefix>>)
-                );
-              },
-              deps: v.deps?.map((dep: string) => this.prefixKey(dep)),
-            };
-          }
-          this.validatorsMap.set(v, _validator);
-          this.reversedValidatorsMap.set(_validator, v);
-          return _validator;
-        });
-        return acc;
-      }, {});
-      return {
-        ...restMap,
-        ...updatedMap,
-      };
+        const mainKey = this.prefixKey(key);
+        nextValidatorsMap[mainKey] = [
+          ...(nextValidatorsMap[mainKey] ?? []),
+          ...validators.map((v: FormValidator<DeepValue<U, Prefix>, any>) => {
+            const cachedValidator = this.validatorsMap.get(v);
+            if (cachedValidator) {
+              return cachedValidator;
+            }
+            // normalize validator to main form validator
+            let _validator: FormValidatorWithDeps<U, any>;
+            if (typeof v === 'function') {
+              _validator = {
+                validate: (value) => {
+                  return v(
+                    value as DeepValue<DeepValue<U, Prefix>, any>,
+                    this.getField(key as DeepKeys<DeepValue<U, Prefix>>)
+                  );
+                },
+                deps: [],
+              };
+            } else {
+              _validator = {
+                ...v,
+                validate: (value) => {
+                  return v.validate(
+                    value as DeepValue<DeepValue<U, Prefix>, any>,
+                    this.getField(key as DeepKeys<DeepValue<U, Prefix>>)
+                  );
+                },
+                deps: v.deps?.map((dep: string) => this.prefixKey(dep)),
+              };
+            }
+            this.validatorsMap.set(v, _validator);
+            this.reversedValidatorsMap.set(_validator, v);
+            return _validator;
+          }),
+        ];
+      });
+
+      this.validators = next;
+      return nextValidatorsMap;
     });
   };
   setInteractions = (updater: StateUpdater<FormInteraction<DeepValue<U, Prefix>>[]>): void => {

@@ -111,8 +111,12 @@ export class FormApi<T> implements IFormApi<T> {
   };
 
   private recompileInteractions = () => {
-    // 先取消之前的所有监听器，重新构造监听
-    this.interactionSubscribes.forEach((unsub) => unsub());
+    // 取消之前的所有监听器，重新构造监听
+    const prevSubscribes = [...this.interactionSubscribes];
+    setTimeout(() => {
+      prevSubscribes.forEach((unsub) => unsub());
+    });
+    this.interactionSubscribes = [];
     this.interactions.state.forEach((interaction) => {
       interaction.deps.forEach((depKey) => {
         this.interactionSubscribes.push(

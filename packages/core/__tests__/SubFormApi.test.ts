@@ -98,18 +98,19 @@ describe('SubFormApi', () => {
       message: 'required',
     });
 
-    // remove validator from sub form
+    // remove validator from sub form, but cannot access validators set from main form
     subFormApi.setValidators((prev) => {
-      expect(prev.a).not.toBeNull();
-      expect(prev.b).not.toBeNull();
+      expect(prev.a).not.toBeDefined();
+      expect(prev.b).toBeDefined();
       return {};
     });
     await subFormApi.validate('a');
     await subFormApi.validate('b');
+    // cannot remove validator set from main form
     expect(subFormApi.getValidationState('a')).toStrictEqual({
-      isValid: true,
+      isValid: false,
       isValidating: false,
-      message: undefined,
+      message: 'required',
     });
   });
   it('should validate from dep key', async () => {
@@ -151,12 +152,6 @@ describe('SubFormApi', () => {
     subFormApi.setValue('a', '1');
     await delay();
     expect(subFormApi.getValidationState('b').isValid).toBeFalsy();
-    subFormApi.setValidators((prev) => {
-      expect([...(prev.b ?? [])].at(0)).toMatchObject({
-        deps: ['a'],
-      });
-      return prev;
-    });
     formApi.setValidators((prev) => {
       expect(prev.foo).not.toBeUndefined();
       return prev;
