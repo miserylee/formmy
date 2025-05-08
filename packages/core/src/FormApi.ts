@@ -173,7 +173,7 @@ export class FormApi<T> implements IFormApi<T> {
         const allCompiledValidatorsOfKey = [...(this.compiledValidators.get(key)?.values() ?? [])];
         this.setValidationState(
           key,
-          allCompiledValidatorsOfKey.reduce<FormValidationState>(
+          allCompiledValidatorsOfKey.reduceRight<FormValidationState>(
             (acc, item) => {
               const states = item.validationStates;
               return {
