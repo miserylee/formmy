@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.2](https://github.com/miserylee/formmy/compare/v0.13.1...v0.13.2) (2025-05-08)
+
+### Bug Fixes
+
+* cannot access validators in sub form when it set from main form ([46114bb](https://github.com/miserylee/formmy/commit/46114bb71113ab7d7ae2d062af0ece04bfb02d2a))
+
 ## [0.13.1](https://github.com/miserylee/formmy/compare/v0.13.0...v0.13.1) (2025-05-08)
 
 ### Bug Fixes
