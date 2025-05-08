@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.13.3](https://github.com/miserylee/formmy/compare/v0.13.2...v0.13.3) (2025-05-08)
+
+### Bug Fixes
+
+* setValidators in sub form may lost other validators ([4915183](https://github.com/miserylee/formmy/commit/49151831d5dd684c114ba603777474bb36d8020d))
+
 ## [0.13.2](https://github.com/miserylee/formmy/compare/v0.13.1...v0.13.2) (2025-05-08)
 
 ### Bug Fixes
