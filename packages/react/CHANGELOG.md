@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.14.0](https://github.com/miserylee/formmy/compare/v0.13.3...v0.14.0) (2025-05-13)
+
+### Features
+
+* add retainValidationStatesWhenDestroy in Field props ([7070b54](https://github.com/miserylee/formmy/commit/7070b54ca9e5e67ba65219f53bea5c57ecbe9b3a))
+
 ## [0.13.3](https://github.com/miserylee/formmy/compare/v0.13.2...v0.13.3) (2025-05-08)
 
 **Note:** Version bump only for package @formmy/react
