@@ -387,11 +387,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
   }
   reset = (): void => {
     // @NOTE: sub form cannot reset values
-    this.resetValidationStates();
   };
   destroy = (): void => {
-    // @NOTE: sub form not really destroy, but only remove validation states, validators and interactions
-    this.resetValidationStates();
+    // @NOTE: sub form not really destroy, but only remove validators and interactions
     this.setValidators(() => ({}));
     this.setInteractions(() => []);
   };

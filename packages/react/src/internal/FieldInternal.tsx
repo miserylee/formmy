@@ -3,12 +3,14 @@ import { type ReactNode, useEffect, useReducer } from 'react';
 import { type DeepKeys, type FormValidator, type IFieldApi } from '@formmy/core';
 
 import { useMemoDeps } from '../helpers/useMemoDeps';
+import { useUpdatingRef } from '../helpers/useUpdatingRef';
 
 export interface FieldInternalProps<T, Key extends DeepKeys<T>> {
   deps?: DeepKeys<T>[];
   children: (fieldApi: IFieldApi<T, Key>) => ReactNode;
   validators?: FormValidator<T, Key> | FormValidator<T, Key>[];
   fieldApi: IFieldApi<T, Key>;
+  retainValidationStatesWhenDestroy?: boolean;
 }
 
 export function FieldInternal<T, Key extends DeepKeys<T>>({
@@ -16,9 +18,12 @@ export function FieldInternal<T, Key extends DeepKeys<T>>({
   deps,
   validators,
   fieldApi,
+  retainValidationStatesWhenDestroy,
 }: FieldInternalProps<T, Key>): JSX.Element {
   const [, reload] = useReducer((p) => p + 1, 0);
   const memoDeps = useMemoDeps<T>(deps ?? []);
+
+  const retainValidationStatesWhenDestroyRef = useUpdatingRef(retainValidationStatesWhenDestroy);
 
   useEffect(() => {
     const _validators = !validators ? [] : Array.isArray(validators) ? validators : [validators];
@@ -35,7 +40,9 @@ export function FieldInternal<T, Key extends DeepKeys<T>>({
         return prev?.filter((validator) => !_validators.includes(validator));
       });
       // 清除掉校验状态
-      fieldApi.resetValidationStates();
+      if (!retainValidationStatesWhenDestroyRef.current) {
+        fieldApi.resetValidationStates();
+      }
     };
   }, []);
 
