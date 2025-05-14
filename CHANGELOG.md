@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.14.1](https://github.com/miserylee/formmy/compare/v0.14.0...v0.14.1) (2025-05-14)
+
+### Bug Fixes
+
+* not update any states after destroyed ([c3af3bd](https://github.com/miserylee/formmy/commit/c3af3bd996552dfa6af6c1db60ff0e51d37155d3))
+
 # [0.14.0](https://github.com/miserylee/formmy/compare/v0.13.3...v0.14.0) (2025-05-13)
 
 ### Features
