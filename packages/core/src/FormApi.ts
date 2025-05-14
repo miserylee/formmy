@@ -1,8 +1,8 @@
 import Store, {
-  updateState,
   type StateUpdater,
-  type UnSubscribeFn,
   type SubscribeOptions,
+  type UnSubscribeFn,
+  updateState,
 } from '@formmy/store';
 import { Immer } from 'immer';
 import get from 'lodash.get';
@@ -11,23 +11,23 @@ import set from 'lodash.set';
 import { FieldApi } from './FieldApi';
 import { SubFormApi } from './SubFormApi';
 import {
+  type CompiledValidator,
   type CreateFormOptions,
+  type CreateSubFormOptions,
   type DeepKeys,
   type DeepValue,
-  type IFieldApi,
-  type IFormApi,
+  EMPTY_VALIDATION_STATE,
   type FormErrorsMap,
+  type FormInteraction,
   type FormValidateResult,
   type FormValidationError,
   type FormValidationState,
   type FormValidator,
   type FormValidatorsMap,
   type FormValidatorWithDeps,
-  type FormInteraction,
-  type CreateSubFormOptions,
+  type IFieldApi,
+  type IFormApi,
   type ValidateFn,
-  EMPTY_VALIDATION_STATE,
-  type CompiledValidator,
 } from './types';
 
 const immer = new Immer({ autoFreeze: false });
@@ -48,7 +48,7 @@ export class FormApi<T> implements IFormApi<T> {
   private cycleInteractionDetectingTimer?: NodeJS.Timeout;
   private cycleInteractionDetected = false;
 
-  private subscribes: UnSubscribeFn[] = [];
+  private destroyed = false;
 
   constructor(private options: CreateFormOptions<T>) {
     this.validate = this.validate.bind(this);
@@ -85,7 +85,9 @@ export class FormApi<T> implements IFormApi<T> {
     if (queueIsEmpty) {
       // should flush later
       setTimeout(() => {
-        this.interactionQueue.forEach((_fn) => _fn(this));
+        if (!this.destroyed) {
+          this.interactionQueue.forEach((_fn) => _fn(this));
+        }
         this.interactionQueue.clear();
       });
     }
@@ -238,6 +240,9 @@ export class FormApi<T> implements IFormApi<T> {
     if (queueIsEmpty) {
       // should flush later
       setTimeout(() => {
+        if (this.destroyed) {
+          return;
+        }
         const allValidateFns = [...this.compiledValidators.values()].flatMap((subMap) =>
           [...subMap.values()].map((compiledValidator) => compiledValidator.validateFn)
         );
@@ -293,6 +298,9 @@ export class FormApi<T> implements IFormApi<T> {
   getValues = (): T => this.values.state;
 
   setValidationState = (key: DeepKeys<T>, updater: StateUpdater<FormValidationState>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.validationStates.update((prev) => {
       return {
         ...prev,
@@ -302,14 +310,23 @@ export class FormApi<T> implements IFormApi<T> {
   };
 
   setValidationStates = (updater: StateUpdater<FormErrorsMap<T>>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.validationStates.update(updater);
   };
 
   resetValidationStates = (): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.validationStates.reset();
   };
 
   resetValidationState = (key: DeepKeys<T>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.validationStates.update((prev) => {
       const next = { ...prev };
       Reflect.deleteProperty(next, key);
@@ -318,14 +335,23 @@ export class FormApi<T> implements IFormApi<T> {
   };
 
   setValidators = (updater: StateUpdater<FormValidatorsMap<T>>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.validators.update(updater);
   };
 
   setInteractions = (updater: StateUpdater<FormInteraction<T>[]>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.interactions.update(updater);
   };
 
   setValue = <Key extends DeepKeys<T>>(key: Key, updater: StateUpdater<DeepValue<T, Key>>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.values.update((prev) => {
       if (key === '.') {
         return updateState(prev, updater as StateUpdater<DeepValue<T, '.'>>);
@@ -341,6 +367,9 @@ export class FormApi<T> implements IFormApi<T> {
   };
 
   setValues = (updater: StateUpdater<T>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.values.update(updater);
   };
 
@@ -356,6 +385,9 @@ export class FormApi<T> implements IFormApi<T> {
   async validate(): Promise<FormValidateResult<T>>;
   async validate(key: DeepKeys<T>): Promise<FormValidationState>;
   async validate(key?: DeepKeys<T>): Promise<FormValidateResult<T> | FormValidationState> {
+    if (this.destroyed) {
+      return this.getValidationStates();
+    }
     // 主动触发的校验逻辑不需要加入队列，这里直接 promise.all 来执行，并将执行结果返回
     const willRunValidators = new Set<CompiledValidator>();
 
@@ -395,6 +427,9 @@ export class FormApi<T> implements IFormApi<T> {
     onSuccess?: (values: T) => void,
     onError?: (errors: FormErrorsMap<T>) => void
   ): Promise<boolean | T> {
+    if (this.destroyed) {
+      return false;
+    }
     const { errors, isValid } = await this.validate();
 
     if (onSuccess) {
@@ -419,16 +454,17 @@ export class FormApi<T> implements IFormApi<T> {
   subscribe<V = T>(type: 'errors', options: SubscribeOptions<FormErrorsMap<T>, V>): UnSubscribeFn;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   subscribe(type: 'values' | 'errors', options: SubscribeOptions<any, any>): UnSubscribeFn {
+    if (this.destroyed) {
+      return () => {
+        // noop.
+      };
+    }
     switch (type) {
       case 'errors': {
-        const unsubscribe = this.validationStates.subscribe(options);
-        this.subscribes.push(unsubscribe);
-        return unsubscribe;
+        return this.validationStates.subscribe(options);
       }
       case 'values': {
-        const unsubscribe = this.values.subscribe(options);
-        this.subscribes.push(unsubscribe);
-        return unsubscribe;
+        return this.values.subscribe(options);
       }
     }
   }
@@ -454,6 +490,11 @@ export class FormApi<T> implements IFormApi<T> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     options: Omit<SubscribeOptions<any, any>, 'selector'>
   ): UnSubscribeFn {
+    if (this.destroyed) {
+      return () => {
+        // noop.
+      };
+    }
     switch (type) {
       case 'value': {
         return this.subscribe('values', {
@@ -477,18 +518,20 @@ export class FormApi<T> implements IFormApi<T> {
   };
 
   destroy = (): void => {
+    if (this.destroyed) {
+      return;
+    }
     // 清理所有缓存、引用和订阅器
     this.validationStates.clear();
     this.values.clear();
     this.validators.clear();
     this.compiledValidators.clear();
-    this.subscribes.forEach((unsubscribe) => unsubscribe());
-    this.subscribes = [];
     this.validateFunctionsQueue.clear();
     this.interactionSubscribes.forEach((unsub) => unsub());
     this.interactionQueue.clear();
     this.interactions.clear();
     this.cycleInteractionDetectingQueue = [];
+    this.destroyed = true;
   };
 
   // 获取子表单实例

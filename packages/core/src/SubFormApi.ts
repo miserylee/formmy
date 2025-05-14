@@ -31,6 +31,8 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
   private interactions: FormInteraction<DeepValue<U, Prefix>>[] = [];
   private interactionsMap = new WeakMap<FormInteraction<DeepValue<U, Prefix>>, FormInteraction<U>>();
 
+  private destroyed = false;
+
   constructor(private options: CreateSubFormOptions<U, Prefix>) {
     this.validate = this.validate.bind(this);
     this.subscribe = this.subscribe.bind(this);
@@ -74,6 +76,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
   }
 
   setValidators = (updater: StateUpdater<FormValidatorsMap<DeepValue<U, Prefix>>>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.options.formApi.setValidators((prev) => {
       const next = updateState(this.validators, updater);
       // remove prev validators from main form
@@ -151,6 +156,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     });
   };
   setInteractions = (updater: StateUpdater<FormInteraction<DeepValue<U, Prefix>>[]>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.options.formApi.setInteractions((prev) => {
       const prevMainFormInteractions = this.interactions.map((i) => this.interactionsMap.get(i));
       const next = updateState(this.interactions, updater);
@@ -167,12 +175,18 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     });
   };
   setValues = (updater: StateUpdater<DeepValue<U, Prefix>>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.options.formApi.setValue(this.options.prefix, updater as StateUpdater<DeepValue<U, Prefix>>);
   };
   setValue = <Key extends DeepKeys<DeepValue<U, Prefix>>>(
     key: Key,
     updater: StateUpdater<DeepValue<DeepValue<U, Prefix>, Key>>
   ): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.options.formApi.setValue(this.prefixKey(key), updater as StateUpdater<any>);
   };
   getValues = (): DeepValue<U, Prefix> => {
@@ -182,6 +196,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     return this.options.formApi.getValue(this.prefixKey(key)) as DeepValue<DeepValue<U, Prefix>, Key>;
   };
   setValidationStates = (updater: StateUpdater<FormErrorsMap<DeepValue<U, Prefix>>>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.options.formApi.setValidationStates((prev) => {
       const { subFormMap, restMap } = Object.entries(prev).reduce<{
         subFormMap: FormErrorsMap<DeepValue<U, Prefix>>;
@@ -220,6 +237,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     key: DeepKeys<DeepValue<U, Prefix>>,
     updater: StateUpdater<FormValidationState>
   ): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.setValidationStates((prev) => {
       return {
         ...prev,
@@ -258,11 +278,17 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     );
   };
   resetValidationStates = (): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.setValidationStates((prev) => {
       return {};
     });
   };
   resetValidationState = (key: DeepKeys<DeepValue<U, Prefix>>): void => {
+    if (this.destroyed) {
+      return;
+    }
     this.options.formApi.resetValidationState(this.prefixKey(key));
   };
   async validate(): Promise<FormValidateResult<DeepValue<U, Prefix>>>;
@@ -270,6 +296,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
   async validate(
     key?: DeepKeys<DeepValue<U, Prefix>>
   ): Promise<FormValidateResult<DeepValue<U, Prefix>> | FormValidationState> {
+    if (this.destroyed) {
+      return this.getValidationStates();
+    }
     if (key !== undefined) {
       return this.options.formApi.validate(this.prefixKey(key));
     }
@@ -298,6 +327,9 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     onSuccess?: (values: DeepValue<U, Prefix>) => void,
     onError?: (errors: FormErrorsMap<DeepValue<U, Prefix>>) => void
   ): Promise<boolean | DeepValue<U, Prefix>> {
+    if (this.destroyed) {
+      return false;
+    }
     // same as submit in FormApi
     const { errors, isValid } = await this.validate();
 
@@ -330,6 +362,11 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     options: SubscribeOptions<FormErrorsMap<DeepValue<U, Prefix>>, V>
   ): UnSubscribeFn;
   subscribe(type: 'values' | 'errors', options: SubscribeOptions<any, any>): UnSubscribeFn {
+    if (this.destroyed) {
+      return () => {
+        // noop.
+      };
+    }
     switch (type) {
       case 'errors':
         return this.options.formApi.subscribe('errors', {
@@ -383,15 +420,24 @@ export class SubFormApi<U, Prefix extends DeepKeys<U>> implements IFormApi<DeepV
     type: 'value' | 'error',
     options: Omit<SubscribeOptions<any, any>, 'selector'>
   ): UnSubscribeFn {
+    if (this.destroyed) {
+      return () => {
+        // noop.
+      };
+    }
     return this.options.formApi.subscribeField(this.prefixKey(key), type as any, options);
   }
   reset = (): void => {
     // @NOTE: sub form cannot reset values
   };
   destroy = (): void => {
+    if (this.destroyed) {
+      return;
+    }
     // @NOTE: sub form not really destroy, but only remove validators and interactions
     this.setValidators(() => ({}));
     this.setInteractions(() => []);
+    this.destroyed = false;
   };
   // 获取子表单实例
   getSubForm = <Prefix2 extends DeepKeys<DeepValue<U, Prefix>>>({
