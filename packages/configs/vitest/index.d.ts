@@ -1,3 +1,3 @@
-import { type UserConfig } from 'vitest/config';
+import { type ViteUserConfig } from 'vitest/config';
 
-export function defineVitestConfig(config: UserConfig = {}): UserConfig;
+export function defineVitestConfig(config?: ViteUserConfig): ViteUserConfig;
