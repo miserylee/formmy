@@ -57,4 +57,8 @@ export class FieldApi<T, Key extends DeepKeys<T>> implements IFieldApi<T, Key> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.form.subscribeField(this.key, type as any, options);
   }
+
+  getKey(): Key {
+    return this.key;
+  }
 }

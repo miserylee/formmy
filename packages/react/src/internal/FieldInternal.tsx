@@ -9,6 +9,11 @@ export interface FieldInternalProps<T, Key extends DeepKeys<T>> {
   deps?: DeepKeys<T>[];
   children: (fieldApi: IFieldApi<T, Key>) => ReactNode;
   validators?: FormValidator<T, Key> | FormValidator<T, Key>[];
+  /**
+   * when values of deps changed, reset the validators of field using the latest prop
+   * default not reset after mount
+   */
+  resetValidatorsDeps?: unknown[];
   fieldApi: IFieldApi<T, Key>;
   retainValidationStatesWhenDestroy?: boolean;
 }
@@ -17,6 +22,7 @@ export function FieldInternal<T, Key extends DeepKeys<T>>({
   children,
   deps,
   validators,
+  resetValidatorsDeps = [],
   fieldApi,
   retainValidationStatesWhenDestroy,
 }: FieldInternalProps<T, Key>): JSX.Element {
@@ -24,9 +30,11 @@ export function FieldInternal<T, Key extends DeepKeys<T>>({
   const memoDeps = useMemoDeps<T>(deps ?? []);
 
   const retainValidationStatesWhenDestroyRef = useUpdatingRef(retainValidationStatesWhenDestroy);
+  const validatorsRef = useUpdatingRef(validators);
 
   useEffect(() => {
-    const _validators = !validators ? [] : Array.isArray(validators) ? validators : [validators];
+    const v = validatorsRef.current;
+    const _validators = !v ? [] : Array.isArray(v) ? v : [v];
     // 校验器仅适用一次，后续的忽略
     fieldApi.setValidators((prev) => {
       return [...(prev || []), ..._validators];
@@ -44,7 +52,7 @@ export function FieldInternal<T, Key extends DeepKeys<T>>({
         fieldApi.resetValidationStates();
       }
     };
-  }, []);
+  }, resetValidatorsDeps);
 
   // 值或者校验结果发生变更时，触发刷新
   useEffect(() => {

@@ -166,6 +166,7 @@ export interface IPureFieldApi<Value> {
 export interface IFieldApi<T, Key extends DeepKeys<T>> extends IPureFieldApi<DeepValue<T, Key>> {
   setValidators(updater: StateUpdater<FormValidator<T, Key>[] | undefined>): void;
   getForm(): IFormApi<T>;
+  getKey(): Key;
 }
 
 export interface CreateFormOptions<T> {

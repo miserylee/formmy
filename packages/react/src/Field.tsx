@@ -1,15 +1,12 @@
-import { type ReactElement, type ReactNode } from 'react';
+import { type ReactElement } from 'react';
 
-import { type DeepKeys, type FormValidator, type IFieldApi } from '@formmy/core';
+import { type DeepKeys } from '@formmy/core';
 
-import { FieldInternal } from './internal/FieldInternal';
+import { FieldInternal, type FieldInternalProps } from './internal/FieldInternal';
 import { useField } from './useField';
 
-export interface FieldProps<T, Key extends DeepKeys<T>> {
+export interface FieldProps<T, Key extends DeepKeys<T>> extends Omit<FieldInternalProps<T, Key>, 'fieldApi'> {
   fieldKey: Key;
-  deps?: DeepKeys<T>[];
-  children: (fieldApi: IFieldApi<T, Key>) => ReactNode;
-  validators?: FormValidator<T, Key> | FormValidator<T, Key>[];
 }
 
 export function Field<T, Key extends DeepKeys<T>>({
