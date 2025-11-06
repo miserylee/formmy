@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/miserylee/formmy/compare/v1.0.0...v1.0.1) (2025-11-06)
+
+### Bug Fixes
+
+* add getKey method to FieldApi and improve Field component props ([28b834a](https://github.com/miserylee/formmy/commit/28b834a29afac708263bdfc3ab59f1030b3436c2))
+
 # [1.0.0](https://github.com/miserylee/formmy/compare/v0.14.1...v1.0.0) (2025-10-27)
 
 **Note:** Version bump only for package formmy
