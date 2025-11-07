@@ -70,6 +70,7 @@ export interface FormValidatorWithDeps<T, Key extends DeepKeys<T>> {
   deps?: DeepKeys<T>[];
   // 为 true 时，当前字段值发生变更时，不会触发校验，只有显式地调用 validate 方法时才会触发
   obtuse?: boolean;
+  debounce?: number;
 }
 
 // 校验器

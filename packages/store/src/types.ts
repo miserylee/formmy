@@ -7,6 +7,8 @@ export type SubscribeOptions<T, V> = {
   immediate?: boolean;
   ignoreReset?: boolean;
   isValueChanged?: (prev: V, current: V) => boolean;
+  // debounce 和 immediate 存在定位上的冲突，如果设置了 debounce，immediate 会失效
+  debounce?: number;
 };
 export type UnSubscribeFn = () => void;
 

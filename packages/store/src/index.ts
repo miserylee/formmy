@@ -41,6 +41,7 @@ export default class Store<T> {
     listener,
     immediate,
     ignoreReset,
+    debounce,
   }: SubscribeOptions<T, V>): UnSubscribeFn {
     let prevValue = selector(this.state);
     const callback: Listener<T> = (values) => {
@@ -52,14 +53,25 @@ export default class Store<T> {
         listener(currentValue);
       }
     };
+
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    const debouncedCallback: Listener<T> = (values) => {
+      if (typeof debounce === 'number' && debounce > 0) {
+        global.clearTimeout(debounceTimer);
+        debounceTimer = global.setTimeout(() => callback(values), debounce);
+      } else {
+        callback(values);
+      }
+    };
+
     const set = immediate ? this.immediateListeners : this.listeners;
-    set.add(callback);
+    set.add(debouncedCallback);
     if (ignoreReset) {
-      this.ignoreResetListeners.add(callback);
+      this.ignoreResetListeners.add(debouncedCallback);
     }
     return () => {
-      set.delete(callback);
-      this.ignoreResetListeners.delete(callback);
+      set.delete(debouncedCallback);
+      this.ignoreResetListeners.delete(debouncedCallback);
     };
   }
 

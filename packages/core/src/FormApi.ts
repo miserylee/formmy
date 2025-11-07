@@ -171,9 +171,16 @@ export class FormApi<T> implements IFormApi<T> {
     }
     const validationStates = { ...EMPTY_VALIDATION_STATE };
     const fieldApi = this.getField(key);
+
+    let uid = 0;
     const validateFn = async () => {
+      uid += 1;
+      const invokeId = uid;
       const fieldValue = this.getValue(key);
       const updateValidationState = (updates: Partial<FormValidationState>) => {
+        if (invokeId !== uid) {
+          return;
+        }
         Object.assign(validationStates, updates);
         // 收集这个字段对应所有校验函数对应的状态，做合并计算
         const allCompiledValidatorsOfKey = [...(this.compiledValidators.get(key)?.values() ?? [])];
@@ -211,6 +218,7 @@ export class FormApi<T> implements IFormApi<T> {
       },
       // 校验器订阅忽略重置值的场景
       ignoreReset: true,
+      debounce: _validator.debounce,
     };
     const subscribes: UnSubscribeFn[] = [];
     if (!_validator.obtuse) {

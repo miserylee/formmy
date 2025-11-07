@@ -1,13 +1,12 @@
+import { type ReactNode, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 import 'tailwindcss/base.css';
 import 'tailwindcss/utilities.css';
+import { AsyncValidator } from './examples/AsyncValidator';
 import { FormBinding } from './examples/FormBinding';
 import { InteractionForm } from './examples/InteractionForm';
 import { LoginForm } from './examples/LoginForm';
-
-import { type ReactNode, useState } from 'react';
-
 import { SubForm } from './examples/SubForm';
 
 interface Story {
@@ -21,6 +20,7 @@ const stories: Story[] = [
   { id: 'interaction', label: 'Interaction', component: <InteractionForm /> },
   { id: 'subform', label: 'SubForm', component: <SubForm /> },
   { id: 'form-binding', label: 'FormBinding', component: <FormBinding /> },
+  { id: 'async-validator', label: 'AsyncValidator', component: <AsyncValidator /> },
 ];
 
 function App() {
