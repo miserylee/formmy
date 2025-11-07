@@ -52,7 +52,7 @@ export function FieldInternal<T, Key extends DeepKeys<T>>({
         fieldApi.resetValidationStates();
       }
     };
-  }, resetValidatorsDeps);
+  }, [...resetValidatorsDeps, fieldApi]);
 
   // 值或者校验结果发生变更时，触发刷新
   useEffect(() => {
