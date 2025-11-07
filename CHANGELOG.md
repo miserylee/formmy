@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2](https://github.com/miserylee/formmy/compare/v1.0.1...v1.0.2) (2025-11-07)
+
+### Bug Fixes
+
+* should reset validators when fieldKey changed ([575d4c0](https://github.com/miserylee/formmy/commit/575d4c066086fb9a9cd50d3a61fbe77ee1ff6187))
+
 ## [1.0.1](https://github.com/miserylee/formmy/compare/v1.0.0...v1.0.1) (2025-11-06)
 
 ### Bug Fixes
