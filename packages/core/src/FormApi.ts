@@ -223,17 +223,17 @@ export class FormApi<T> implements IFormApi<T> {
     const subscribes: UnSubscribeFn[] = [];
     if (!_validator.obtuse) {
       subscribes.push(this.subscribeField(key, 'value', subscribeOptions));
-    }
-    if (!_validator.deps) {
-      // 没有声明依赖的，任何值变更都要触发校验
-      subscribes.push(this.subscribeField('.', 'value', subscribeOptions));
-    } else {
-      // 根据依赖做过滤
-      // 当前 key 对应的值变更了都要校验，和依赖声明无关
-      const depsWithoutCurrentKey = [...new Set(_validator.deps.filter((dep) => dep !== key))];
-      depsWithoutCurrentKey.forEach((depKey) => {
-        subscribes.push(this.subscribeField(depKey, 'value', subscribeOptions));
-      });
+      if (!_validator.deps) {
+        // 没有声明依赖的，任何值变更都要触发校验
+        subscribes.push(this.subscribeField('.', 'value', subscribeOptions));
+      } else {
+        // 根据依赖做过滤
+        // 当前 key 对应的值变更了都要校验，和依赖声明无关
+        const depsWithoutCurrentKey = [...new Set(_validator.deps.filter((dep) => dep !== key))];
+        depsWithoutCurrentKey.forEach((depKey) => {
+          subscribes.push(this.subscribeField(depKey, 'value', subscribeOptions));
+        });
+      }
     }
     this.setCompiledValidator(key, validator, {
       validateFn,
