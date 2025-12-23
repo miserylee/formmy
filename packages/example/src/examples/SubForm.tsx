@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { getFormFactory } from '@formmy/react';
 
@@ -13,52 +13,63 @@ interface FormValues {
 const formFactory = getFormFactory<FormValues>();
 
 function ListItem({ index }: { index: number }) {
-  const subFormFactory = useMemo(() => formFactory.getSubFormFactory(`list.${index}`), [index]);
+  const isUnmountedRef = useRef(false);
+  useEffect(() => {
+    return () => {
+      isUnmountedRef.current = true;
+    };
+  }, []);
+
   return (
-    <subFormFactory.Form
+    <formFactory.SubForm
+      prefix={`list.${index}`}
       interactions={[
         {
           deps: ['username'],
           action: (formApi) => {
-            formApi.setValue('department', '');
+            if (!isUnmountedRef.current) {
+              formApi.setValue('department', '');
+            }
           },
         },
       ]}
     >
-      <li className="flex items-center gap-4">
-        <subFormFactory.Field fieldKey="username">
-          {(fieldApi) => (
-            <label>
-              Username
-              <input value={fieldApi.getValue()} onChange={(e) => fieldApi.setValue(e.target.value)} />
-            </label>
-          )}
-        </subFormFactory.Field>
-        <subFormFactory.Field fieldKey="department">
-          {(fieldApi) => (
-            <label>
-              Department
-              <input value={fieldApi.getValue()} onChange={(e) => fieldApi.setValue(e.target.value)} />
-            </label>
-          )}
-        </subFormFactory.Field>
-        <formFactory.Subscribe>
-          {(formApi) => (
-            <button
-              onClick={() => {
-                formApi.setValue('list', (prev) => {
-                  const next = [...prev];
-                  next.splice(index, 1);
-                  return next;
-                });
-              }}
-            >
-              ×
-            </button>
-          )}
-        </formFactory.Subscribe>
-      </li>
-    </subFormFactory.Form>
+      {(subFormFactory) => (
+        <li className="flex items-center gap-4">
+          <subFormFactory.Field fieldKey="username">
+            {(fieldApi) => (
+              <label>
+                Username
+                <input value={fieldApi.getValue()} onChange={(e) => fieldApi.setValue(e.target.value)} />
+              </label>
+            )}
+          </subFormFactory.Field>
+          <subFormFactory.Field fieldKey="department">
+            {(fieldApi) => (
+              <label>
+                Department
+                <input value={fieldApi.getValue()} onChange={(e) => fieldApi.setValue(e.target.value)} />
+              </label>
+            )}
+          </subFormFactory.Field>
+          <formFactory.Subscribe>
+            {(formApi) => (
+              <button
+                onClick={() => {
+                  formApi.setValue('list', (prev) => {
+                    const next = [...prev];
+                    next.splice(index, 1);
+                    return next;
+                  });
+                }}
+              >
+                ×
+              </button>
+            )}
+          </formFactory.Subscribe>
+        </li>
+      )}
+    </formFactory.SubForm>
   );
 }
 

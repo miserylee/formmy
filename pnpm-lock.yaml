@@ -88,13 +88,11 @@ importers:
       '@formmy/react': workspace:*
       '@rspack/cli': ^0.5.9
       '@rspack/core': ^0.5.9
-      '@types/lodash': ^4.17.20
       '@types/react': ^18.2.73
       '@types/react-dom': ^18.2.23
       autoprefixer: ^10.4.19
       classnames: ^2.5.1
       eslint: ^8.57.0
-      lodash: ^4.17.21
       postcss: ^8.4.39
       postcss-loader: ^8.1.1
       react: ^18.2.0
@@ -106,14 +104,12 @@ importers:
       '@formmy/core': link:../core
       '@formmy/react': link:../react
       classnames: 2.5.1
-      lodash: 4.17.21
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
       '@formmy/configs': link:../configs
       '@rspack/cli': 0.5.9_@rspack+core@0.5.9
       '@rspack/core': 0.5.9
-      '@types/lodash': 4.17.20
       '@types/react': 18.2.73
       '@types/react-dom': 18.2.23
       autoprefixer: 10.4.19_postcss@8.4.39
@@ -1838,10 +1834,6 @@ packages:
 
   /@types/lodash/4.17.0:
     resolution: {integrity: sha512-t7dhREVv6dbNj0q17X12j7yDG4bD/DHYX7o5/DbDxobP0HnGPgpRz2Ej77aL7TZT3DSw13fqUTj8J4mMnqa7WA==}
-    dev: true
-
-  /@types/lodash/4.17.20:
-    resolution: {integrity: sha512-H3MHACvFUEiujabxhaI/ImO6gUrd8oOurg7LQtS7mbwIXA/cUqWrvBsaeJ23aZEPk1TAYkurjfMbSELfoCXlGA==}
     dev: true
 
   /@types/mime/1.3.5:
@@ -5229,6 +5221,7 @@ packages:
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: true
 
   /log-symbols/4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}

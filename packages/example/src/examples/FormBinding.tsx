@@ -1,5 +1,3 @@
-import { useMemo } from 'react';
-
 import { FormApi } from '@formmy/core';
 import { type FormFactory, getFormFactory } from '@formmy/react';
 
@@ -47,9 +45,9 @@ function CommonForm({ factory }: { factory: FormFactory<CommonFormValues, true> 
   );
 }
 
-function FormA() {
-  const commonFormFactory = useMemo(() => formAFactory.getSubFormFactory('common'), []);
+const commonFormFactoryInFormA = formAFactory.getSubFormFactory('common');
 
+function FormA() {
   return (
     <div className="flex flex-col gap-4">
       <formAFactory.Form
@@ -69,7 +67,7 @@ function FormA() {
             )}
           </formAFactory.Field>
         </label>
-        <CommonForm factory={commonFormFactory} />
+        <CommonForm factory={commonFormFactoryInFormA} />
         <formAFactory.Subscribe>
           {(formApi) => (
             <pre>
@@ -98,9 +96,9 @@ const formBFactory = getFormFactory<FormB>(function useForm() {
   return sharedFormBApi;
 });
 
-function FormB() {
-  const commonFormFactory = useMemo(() => formBFactory.getSubFormFactory('nested.common'), []);
+const commonFormFactoryInFormB = formBFactory.getSubFormFactory('nested.common');
 
+function FormB() {
   return (
     <div className="flex flex-col gap-4">
       <formBFactory.Form>
@@ -112,7 +110,7 @@ function FormB() {
             )}
           </formBFactory.Field>
         </label>
-        <CommonForm factory={commonFormFactory} />
+        <CommonForm factory={commonFormFactoryInFormB} />
         <formBFactory.Subscribe>
           {(formApi) => (
             <pre>
