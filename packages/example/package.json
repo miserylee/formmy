@@ -1,6 +1,6 @@
 {
   "name": "@formmy/example",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "private": true,
   "description": "一个简单但是够用的表单示例包",
   "homepage": "https://github.com/miserylee/formmy#readme",
