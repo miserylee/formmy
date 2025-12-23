@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/miserylee/formmy/compare/v1.2.0...v1.2.1) (2025-12-23)
+
+### Bug Fixes
+
+* add fieldKey as key in Field/SubForm components ([ab93164](https://github.com/miserylee/formmy/commit/ab93164ea19991fe8505f980302a0df61a0e5de2))
+
 # [1.2.0](https://github.com/miserylee/formmy/compare/v1.1.1...v1.2.0) (2025-12-23)
 
 ### Features
