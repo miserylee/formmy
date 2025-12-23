@@ -52,7 +52,7 @@ export function SubFormInternal<T, Prefix extends DeepKeys<T>>({
 export const SubFormFromRoot = forwardRef((props, ref): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formApi = useForm<any>();
-  return <SubFormInternal {...props} _ref={ref} formApi={formApi} />;
+  return <SubFormInternal key={props.prefix} {...props} _ref={ref} formApi={formApi} />;
 }) as <T, Prefix extends DeepKeys<T>>(
   props: Omit<SubFormInternalProps<T, Prefix>, 'formApi' | '_ref'> & {
     ref?: ForwardedRef<IFormApi<DeepValue<T, Prefix>>>;
@@ -109,7 +109,7 @@ export function getSubFormFactory<T, Prefix extends DeepKeys<T>>(
   const SubFormInSubForm = forwardRef((props, ref) => {
     const mainFormApi = useSubForm();
 
-    return <SubFormInternal {...props} _ref={ref} formApi={mainFormApi} />;
+    return <SubFormInternal key={props.prefix} {...props} _ref={ref} formApi={mainFormApi} />;
   }) as <Prefix2 extends DeepKeys<DeepValue<T, Prefix>>>(
     props: Omit<SubFormInternalProps<DeepValue<T, Prefix>, Prefix2>, 'formApi' | '_ref'> & {
       ref?: ForwardedRef<IFormApi<DeepValue<DeepValue<T, Prefix>, Prefix2>>>;
@@ -124,7 +124,7 @@ export function getSubFormFactory<T, Prefix extends DeepKeys<T>>(
     const fieldApi = useSubFormField(fieldKey);
 
     return (
-      <FieldInternal {...props} fieldApi={fieldApi}>
+      <FieldInternal key={fieldKey} {...props} fieldApi={fieldApi}>
         {children}
       </FieldInternal>
     );

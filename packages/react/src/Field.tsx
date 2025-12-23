@@ -17,7 +17,7 @@ export function Field<T, Key extends DeepKeys<T>>({
   const fieldApi = useField<T, Key>(fieldKey);
 
   return (
-    <FieldInternal {...props} fieldApi={fieldApi}>
+    <FieldInternal key={fieldKey} {...props} fieldApi={fieldApi}>
       {children}
     </FieldInternal>
   );
